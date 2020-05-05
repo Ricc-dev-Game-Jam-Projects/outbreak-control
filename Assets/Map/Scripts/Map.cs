@@ -1,5 +1,6 @@
 ﻿
 using System;
+using UnityEngine;
 
 public class Map
 {
@@ -29,15 +30,17 @@ public class Map
         {
             for (int y = 0; y < height; y++)
             {
-                //  0 1  | * * * *
-                // 5 * 2 |  * * * *
-                //  4 3  | * * * *
+                //  0 1  |  * * * *
+                // 5 * 2 | * * * *
+                //  4 3  |  * * * *
                 Region region = grid[x, y];
                 Region neighbor(int _x, int _y)
                 {
                     try { return grid[_x, _y]; }
                     catch (Exception) { return null; }
                 }
+
+                Mathf.PerlinNoise(1, 1);
 
                 region.neighborhood = y % 2 == 0
                     ? new Region[] {
