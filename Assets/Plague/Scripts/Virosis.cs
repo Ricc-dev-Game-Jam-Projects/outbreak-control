@@ -5,11 +5,13 @@ public class Virosis
 {
     public string Name { get; private set; }
     private List<Symptoms> MySymptoms;
+    private List<Transmission> MyTransmissions;
 
     public Virosis(string name)
     {
         Name = name;
         MySymptoms = new List<Symptoms>();
+        MyTransmissions = new List<Transmission>();
     }
 
 
@@ -33,6 +35,9 @@ public class Virosis
         return MySymptoms.ToArray();
     }
 
-
+    public Transmission[] GetTransmissions()
+    {
+        return MyTransmissions.ToArray();
+    }
 
 }
