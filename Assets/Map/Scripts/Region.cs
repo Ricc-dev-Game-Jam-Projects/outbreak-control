@@ -10,8 +10,11 @@ public class Region
     public Vector2 position;
     public Region[] neighborhood;
 
+    public float altitude;
+
     public UnityAction setColor;
     public UnityAction clearColor;
+    public UnityAction regionClicked;
 
     public Region(Map map, int x, int y)
     {
@@ -25,6 +28,11 @@ public class Region
         this.map = map;
         this.position = position;
         neighborhood = new Region[6];
+    }
+
+    public void OnMouseDown()
+    {
+        regionClicked?.Invoke();
     }
 
     public void OnMouseOver()

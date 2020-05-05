@@ -29,6 +29,11 @@ public class RegionBehaviour : MonoBehaviour
 
     }
 
+    private void OnMouseDown()
+    {
+        region?.OnMouseDown();
+    }
+
     private void OnMouseOver()
     {
         foreach (var neighbor in region.neighborhood)
