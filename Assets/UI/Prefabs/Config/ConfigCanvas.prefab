@@ -242,11 +242,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tabs:
   - Activators:
-    - {fileID: 539470119969732003}
-    TheTab: {fileID: 539470119096865229}
-  - Activators:
     - {fileID: 1865163205875993056}
     TheTab: {fileID: 539470119939056110}
+  - Activators:
+    - {fileID: 539470119969732003}
+    TheTab: {fileID: 539470119096865229}
+  MenuKey: 27
 --- !u!1 &539470119176148052
 GameObject:
   m_ObjectHideFlags: 0
