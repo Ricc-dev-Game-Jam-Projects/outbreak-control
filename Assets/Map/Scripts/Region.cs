@@ -7,8 +7,11 @@ using UnityEngine.Events;
 public class Region
 {
     public Map map;
-    public Vector2 position;
+    public int x, y;
+    public float xHex, yHex;
     public Region[] neighborhood;
+
+    public bool color;
 
     public float altitude;
 
@@ -19,14 +22,10 @@ public class Region
     public Region(Map map, int x, int y)
     {
         this.map = map;
-        position = new Vector2(x, y);
-        neighborhood = new Region[6];
-    }
-
-    public Region(Map map, Vector2 position)
-    {
-        this.map = map;
-        this.position = position;
+        this.x = x;
+        this.y = y;
+        xHex = x - (float) y % 2 / 2;
+        yHex = (float) 3 * y / 4;
         neighborhood = new Region[6];
     }
 
@@ -37,11 +36,17 @@ public class Region
 
     public void OnMouseOver()
     {
-        setColor?.Invoke();
+        foreach(Region neighbor in neighborhood)
+        {
+            setColor?.Invoke();
+        }
     }
 
     public void OnMouseExit()
     {
-        clearColor?.Invoke();
+        foreach (Region neighbor in neighborhood)
+        {
+            clearColor?.Invoke();
+        }
     }
 }

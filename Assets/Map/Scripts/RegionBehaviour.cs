@@ -14,7 +14,7 @@ public class RegionBehaviour : MonoBehaviour
     void Start()
     {
         deselected = GetComponent<SpriteRenderer>().color;
-        region.setColor = () =>
+        region.setColor += () =>
         {
             GetComponent<SpriteRenderer>().color = selected;
         };
@@ -22,11 +22,18 @@ public class RegionBehaviour : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().color = deselected;
         };
+
+
     }
 
     void Update()
     {
-
+        byte alpha = region.altitude * 255 < 0
+            ? (byte)0
+            : region.altitude * 255 >= 256
+            ? (byte)255 : (byte)Math.Floor(region.altitude * 255);
+        GetComponent<SpriteRenderer>().color =
+                new Color32(0, 0, 0, alpha);
     }
 
     private void OnMouseDown()
@@ -36,17 +43,11 @@ public class RegionBehaviour : MonoBehaviour
 
     private void OnMouseOver()
     {
-        foreach (var neighbor in region.neighborhood)
-        {
-            neighbor?.OnMouseOver();
-        }
+        region?.OnMouseOver();
     }
 
     private void OnMouseExit()
     {
-        foreach (var neighbor in region.neighborhood)
-        {
-            neighbor?.OnMouseExit();
-        }
+        region?.OnMouseExit();
     }
 }
