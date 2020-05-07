@@ -3,7 +3,6 @@
     public string Name { get; private set; }
     public string Description { get; protected set; }
     public float ContagionRate { get; protected set; }
-
     public int PerkLevel { get; protected set; }
 
     public Perks(string nome, string description)

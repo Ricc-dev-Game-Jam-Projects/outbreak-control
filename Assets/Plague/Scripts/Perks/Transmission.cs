@@ -1,6 +1,6 @@
 ﻿using System;
 
-class Transmission : Perks
+public class Transmission : Perks
 {
     public float Infected { get; private set; } //numero de pessoas infectadas por unidade de tempo
     public ETransmission TransmissionType { get; private set; }
