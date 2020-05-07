@@ -6,24 +6,26 @@ using UnityEngine;
 public class MapBehaviour : MonoBehaviour
 {
     public GameObject regionPrefab;
-    public int width;
-    public int height;
-    public int blur;
-    public Sprite regionSprite;
+
+    public int wGrid, hGrid;
+    [Range(0, 255)]
+    public float xOffset, yOffset;
+    [Range(0f, 1f)]
+    public float scale;
     [Range(0f, 1f)]
     public float seaLevel;
 
     private float pixelsPerUnit;
     private Map map;
-
-    private float xRand, yRand;
+    private
 
     void Start()
     {
-        xRand = UnityEngine.Random.Range(0, 100);
-        yRand = UnityEngine.Random.Range(0, 100);
-        pixelsPerUnit = regionSprite.rect.width / regionSprite.bounds.size.x;
-        map = new Map(width, height);
+        
+        Sprite sprite = regionPrefab.GetComponent<SpriteRenderer>().sprite;
+        pixelsPerUnit = sprite.rect.width / sprite.bounds.size.x;
+
+        map = new Map(wGrid, hGrid);
 
         map.Sweep((region) =>
         {
@@ -39,15 +41,32 @@ public class MapBehaviour : MonoBehaviour
                 regionSpriteWidth * region.xHex / pixelsPerUnit,
                 regionSpriteHeight * region.yHex / pixelsPerUnit, 0);
         });
+
+        GenerateNewMap();
     }
 
     void Update()
     {
+        
+    }
+
+    private void GenerateNewMap()
+    {
+        xOffset = UnityEngine.Random.Range(0, 255);
+        yOffset = UnityEngine.Random.Range(0, 255);
+        float xNoise, yNoise;
+
         map.Sweep((region) =>
         {
-            region.altitude = Mathf.PerlinNoise(xRand + region.xHex / blur, yRand + region.yHex / blur) * 0.8f +
-                Mathf.PerlinNoise(xRand + region.xHex / blur / 2, yRand + region.yHex / blur * 2 / 3) * 0.2f;
-            region.altitude = region.altitude > seaLevel ? region.altitude : 0;
+            xNoise = xOffset + region.xHex * scale;
+            yNoise = yOffset + region.yHex * scale;
+
+            region.Altitude =
+                Mathf.PerlinNoise(xNoise, yNoise) * 0.5f +
+                Mathf.PerlinNoise(xNoise / 3, yNoise / 3) * 0.5f;
+
+            region.type = region.Altitude <= seaLevel ?
+                RegionType.Water : RegionType.Ground;
         });
     }
 }

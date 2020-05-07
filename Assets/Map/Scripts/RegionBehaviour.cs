@@ -8,46 +8,52 @@ public class RegionBehaviour : MonoBehaviour
 {
     [SerializeField]
     public Region region;
-    public Color32 selected;
-    public Color32 deselected;
+    public Color groundColor;
+    public Color waterColor;
 
     void Start()
     {
-        deselected = GetComponent<SpriteRenderer>().color;
-        region.setColor += () =>
+        float r, g, b, a = region.Altitude;
+        switch (region.type)
         {
-            GetComponent<SpriteRenderer>().color = selected;
-        };
-        region.clearColor = () =>
-        {
-            GetComponent<SpriteRenderer>().color = deselected;
-        };
+            case RegionType.Ground:
+                r = groundColor.r;
+                g = groundColor.g;
+                b = groundColor.b;
+                a = 1 - a;
+                break;
+            case RegionType.Water:
+                r = waterColor.r;
+                g = waterColor.g;
+                b = waterColor.b;
+                break;
+            default:
+                r = g = b = 0;
+                break;
+        }
 
+        GetComponentInChildren<DelimiterBehaviour>().SetDelimiter(region);
 
+        GetComponent<SpriteRenderer>().color = new Color(r * a, g * a, b * a, 1);
     }
 
     void Update()
     {
-        byte alpha = region.altitude * 255 < 0
-            ? (byte)0
-            : region.altitude * 255 >= 256
-            ? (byte)255 : (byte)Math.Floor(region.altitude * 255);
-        GetComponent<SpriteRenderer>().color =
-                new Color32(0, 0, 0, alpha);
+
     }
 
-    private void OnMouseDown()
-    {
-        region?.OnMouseDown();
-    }
+    //private void OnMouseDown()
+    //{
+    //    region?.OnMouseDown();
+    //}
 
-    private void OnMouseOver()
-    {
-        region?.OnMouseOver();
-    }
+    //private void OnMouseOver()
+    //{
+    //    region?.OnMouseOver();
+    //}
 
-    private void OnMouseExit()
-    {
-        region?.OnMouseExit();
-    }
+    //private void OnMouseExit()
+    //{
+    //    region?.OnMouseExit();
+    //}
 }

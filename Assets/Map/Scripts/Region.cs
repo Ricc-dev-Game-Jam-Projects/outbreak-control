@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,9 +12,16 @@ public class Region
     public float xHex, yHex;
     public Region[] neighborhood;
 
-    public bool color;
-
-    public float altitude;
+    public RegionType type;
+    private float altitude;
+    public float Altitude {
+        get { return altitude; }
+        set {
+            level = (int)Math.Truncate(value * 10);
+            altitude = value;
+        }
+    }
+    public int level;
 
     public UnityAction setColor;
     public UnityAction clearColor;
@@ -24,8 +32,8 @@ public class Region
         this.map = map;
         this.x = x;
         this.y = y;
-        xHex = x - (float) y % 2 / 2;
-        yHex = (float) 3 * y / 4;
+        xHex = x - (float)y % 2 / 2;
+        yHex = (float)3 * y / 4;
         neighborhood = new Region[6];
     }
 
@@ -36,7 +44,7 @@ public class Region
 
     public void OnMouseOver()
     {
-        foreach(Region neighbor in neighborhood)
+        foreach (Region neighbor in neighborhood)
         {
             setColor?.Invoke();
         }
