@@ -1,27 +1,30 @@
 ﻿using System;
 
-public class Transmission : Perks
+public class Transmission : Perk
 {
-    public float Infected { get; private set; } //numero de pessoas infectadas por unidade de tempo
     public ETransmission TransmissionType { get; private set; }
+    public float Infected { get; private set; } // numero de pessoas infectadas por unidade de tempo
+    
     private float EvolveNum { get; set; }
 
-    public Transmission(string name, string description, ETransmission e) : base(name, description)
+    public Transmission(string name, string description, int perkLevel, float infected, ETransmission transmission, float contagionRate) : 
+                    base(name, description, perkLevel, contagionRate)
     {
-        TransmissionType = e;
+        TransmissionType = transmission;
         EvolveNum = 0.3f;
         Infected = 0;
+        Infected = infected;
     }
 
-    public override void EvolvePerk()
+    public override void EvolvePerk(Perk PerkEvolved)
     {
-        if(PerkLevel < 4)
+        base.EvolvePerk(PerkEvolved);
+        if (PerkLevel < 4)
         {
             PerkLevel++;
             ContagionRate += EvolveNum;
-            EvolveNum -= EvolveNum - 0.06f; //evoluir o perk nessa velocidade
+            EvolveNum -= 0.06f; //evoluir o perk nessa velocidade
         }
-
     }
 
     public override void SetContagionRate()

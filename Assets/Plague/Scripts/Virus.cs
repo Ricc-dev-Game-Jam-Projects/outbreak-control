@@ -1,40 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-public class Virus 
+public class Virus
 {
-    public string Name { get; private set; } 
+    public string Name { get; private set; }
     public float ChanceOfContamination { get; private set; }
     public float SpreadingSpeed { get; private set; }
 
-    private List<Symptoms> MySymptoms;// Sintomas do virus
-    private List<Transmission> MyTransmissions; //meios de Transmissao do virus
+    public List<Symptom> MySymptoms { get; private set; } // Sintomas do virus
+    public List<Transmission> MyTransmissions { get; private set; } //meios de Transmissao do virus
+    
+    public Dictionary<string, Perk[]> Perks;
 
+    public int PerkNumber = 2;
 
-    public Virus(string name, ETransmission way, float coc)
+    public Virus(string name, float coc)
     {
         Name = name;
         ChanceOfContamination = coc;
-        MySymptoms = new List<Symptoms>();
+        MySymptoms = new List<Symptom>();
         MyTransmissions = new List<Transmission>();
+        Perks = new Dictionary<string, Perk[]>
+        {
+            { "Symptoms", MySymptoms.ToArray() as Perk[] },
+            { "Transmission", MyTransmissions.ToArray() as Perk[] }
+        };
     }
 
     public override string ToString()
     {
         string transmissions = "";
-        foreach(Transmission t in MyTransmissions)
+        foreach (Transmission t in MyTransmissions)
         {
             transmissions += " " + t.Name;
         }
 
         string symptoms = "";
-        foreach(Symptoms s in MySymptoms)
+        foreach (Symptom s in MySymptoms)
         {
             symptoms += " " + s.Name;
         }
 
 
-        return string.Format("The virus {0}, transmitted through {1},  with the symptoms: {2}, Iminent Outbreak", Name, 
+        return string.Format("The virus {0}, transmitted through {1},  with the symptoms: {2}, Iminent Outbreak", Name,
           transmissions, symptoms);
     }
 
@@ -48,6 +56,13 @@ public class Virus
         SpreadingSpeed += rating;
     }
 
+    public void AddSymptom(Symptom symptoms)
+    {
+        MySymptoms.Add(symptoms);
+    }
 
-
+    public void AddTransmission(Transmission transmission)
+    {
+        MyTransmissions.Add(transmission);
+    }
 }

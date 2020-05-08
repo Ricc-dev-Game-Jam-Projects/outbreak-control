@@ -7,13 +7,18 @@ public class VirusBehaviour : MonoBehaviour
 {
     public TextMeshProUGUI text;
     public Virus virus;
+
+    private PerkGenerator perkGenerator;
+
     void Start()
     {
-        virus = new Virus("Hepy", ETransmission.Airborne | ETransmission.Bloodborne, 0.5f);
+        virus = new Virus("Hepy", 0.5f);
+        Debug.Log("Virus " + virus.Name);
         text.text = virus.ToString();
+        perkGenerator = new PerkGenerator();
+        perkGenerator.GeneratePerks(out Symptom[] symptoms, out Transmission[] transmissions);
     }
 
-    // Update is called once per frame
     void Update()
     {
         
