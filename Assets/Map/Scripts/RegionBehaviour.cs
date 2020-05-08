@@ -7,47 +7,44 @@ using UnityEngine.EventSystems;
 public class RegionBehaviour : MonoBehaviour
 {
     [SerializeField]
-    public Region region;
-    public Color32 selected;
-    public Color32 deselected;
+    public Color GroundColor;
+    public Color WaterColor;
+
+    public Region Region;
 
     void Start()
     {
-        deselected = GetComponent<SpriteRenderer>().color;
-        region.setColor += () =>
+        float r, g, b, a = Region.Altitude;
+        switch (Region.Type)
         {
-            GetComponent<SpriteRenderer>().color = selected;
-        };
-        region.clearColor = () =>
-        {
-            GetComponent<SpriteRenderer>().color = deselected;
-        };
+            case RegionType.Ground:
+                r = GroundColor.r;
+                g = GroundColor.g;
+                b = GroundColor.b;
+                a = 1 - a;
+                break;
+            case RegionType.Coast:
+                r = (GroundColor.r + WaterColor.r) / 2;
+                g = (GroundColor.g + WaterColor.g) / 2;
+                b = (GroundColor.b + WaterColor.b) / 2;
+                a = 1 - a;
+                break;
+            case RegionType.Water:
+                r = WaterColor.r;
+                g = WaterColor.g;
+                b = WaterColor.b;
+                break;
+            default:
+                r = g = b = 0;
+                break;
+        }
 
+        GetComponentInChildren<DelimiterHandlerBehaviour>().SetDelimiter(Region);
+        GetComponentInChildren<PopulationBehaviour>().
+            SetPopulation(Region.PopulationDensity);
 
+        GetComponent<SpriteRenderer>().color = new Color(r * a, g * a, b * a, 1);
     }
 
-    void Update()
-    {
-        byte alpha = region.altitude * 255 < 0
-            ? (byte)0
-            : region.altitude * 255 >= 256
-            ? (byte)255 : (byte)Math.Floor(region.altitude * 255);
-        GetComponent<SpriteRenderer>().color =
-                new Color32(0, 0, 0, alpha);
-    }
-
-    private void OnMouseDown()
-    {
-        region?.OnMouseDown();
-    }
-
-    private void OnMouseOver()
-    {
-        region?.OnMouseOver();
-    }
-
-    private void OnMouseExit()
-    {
-        region?.OnMouseExit();
-    }
+    void Update() { }
 }

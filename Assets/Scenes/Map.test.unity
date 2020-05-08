@@ -289,13 +289,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 250f275011bbc3a4e8282e82ed0ad2c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionPrefab: {fileID: 9164362076272197100, guid: fa6aaf0e95bd04b4fb69ada3998184f6,
+  RegionPrefab: {fileID: 9164362076272197100, guid: fa6aaf0e95bd04b4fb69ada3998184f6,
     type: 3}
-  width: 54
-  height: 35
-  blur: 10
-  regionSprite: {fileID: 21300000, guid: fcbf97bc0e54ed74a907f1467791638e, type: 3}
-  seaLevel: 0.3
+  WGrid: 41
+  HGrid: 27
+  XOffset: 0
+  YOffset: 0
+  Scale: 0.18
+  SeaLevel: 0.4
 --- !u!4 &1979396597
 Transform:
   m_ObjectHideFlags: 0
