@@ -4,57 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[System.Serializable]
+[Serializable]
 public class Region
 {
-    public Map map;
-    public int x, y;
-    public float xHex, yHex;
-    public Region[] neighborhood;
+    public Map Map;
+    public int X, Y;
+    public float XHex, YHex;
+    public Region[] Neighborhood;
 
-    public RegionType type;
+    public RegionType Type;
+    public int District;
+    public int Level;
+    public float PopulationDensity;
     private float altitude;
     public float Altitude {
         get { return altitude; }
         set {
-            level = (int)Math.Truncate(value * 10);
+            Level = (int)Math.Truncate(value * 10);
             altitude = value;
         }
     }
-    public int level;
-
-    public UnityAction setColor;
-    public UnityAction clearColor;
-    public UnityAction regionClicked;
 
     public Region(Map map, int x, int y)
     {
-        this.map = map;
-        this.x = x;
-        this.y = y;
-        xHex = x - (float)y % 2 / 2;
-        yHex = (float)3 * y / 4;
-        neighborhood = new Region[6];
-    }
-
-    public void OnMouseDown()
-    {
-        regionClicked?.Invoke();
-    }
-
-    public void OnMouseOver()
-    {
-        foreach (Region neighbor in neighborhood)
-        {
-            setColor?.Invoke();
-        }
-    }
-
-    public void OnMouseExit()
-    {
-        foreach (Region neighbor in neighborhood)
-        {
-            clearColor?.Invoke();
-        }
+        Map = map;
+        X = x;
+        Y = y;
+        XHex = x - (float)y % 2 / 2;
+        YHex = (float)3 * y / 4;
+        Neighborhood = new Region[6];
     }
 }

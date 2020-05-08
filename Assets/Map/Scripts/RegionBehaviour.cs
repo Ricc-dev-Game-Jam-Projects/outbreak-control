@@ -7,53 +7,44 @@ using UnityEngine.EventSystems;
 public class RegionBehaviour : MonoBehaviour
 {
     [SerializeField]
-    public Region region;
-    public Color groundColor;
-    public Color waterColor;
+    public Color GroundColor;
+    public Color WaterColor;
+
+    public Region Region;
 
     void Start()
     {
-        float r, g, b, a = region.Altitude;
-        switch (region.type)
+        float r, g, b, a = Region.Altitude;
+        switch (Region.Type)
         {
             case RegionType.Ground:
-                r = groundColor.r;
-                g = groundColor.g;
-                b = groundColor.b;
+                r = GroundColor.r;
+                g = GroundColor.g;
+                b = GroundColor.b;
+                a = 1 - a;
+                break;
+            case RegionType.Coast:
+                r = (GroundColor.r + WaterColor.r) / 2;
+                g = (GroundColor.g + WaterColor.g) / 2;
+                b = (GroundColor.b + WaterColor.b) / 2;
                 a = 1 - a;
                 break;
             case RegionType.Water:
-                r = waterColor.r;
-                g = waterColor.g;
-                b = waterColor.b;
+                r = WaterColor.r;
+                g = WaterColor.g;
+                b = WaterColor.b;
                 break;
             default:
                 r = g = b = 0;
                 break;
         }
 
-        GetComponentInChildren<DelimiterBehaviour>().SetDelimiter(region);
+        GetComponentInChildren<DelimiterHandlerBehaviour>().SetDelimiter(Region);
+        GetComponentInChildren<PopulationBehaviour>().
+            SetPopulation(Region.PopulationDensity);
 
         GetComponent<SpriteRenderer>().color = new Color(r * a, g * a, b * a, 1);
     }
 
-    void Update()
-    {
-
-    }
-
-    //private void OnMouseDown()
-    //{
-    //    region?.OnMouseDown();
-    //}
-
-    //private void OnMouseOver()
-    //{
-    //    region?.OnMouseOver();
-    //}
-
-    //private void OnMouseExit()
-    //{
-    //    region?.OnMouseExit();
-    //}
+    void Update() { }
 }

@@ -5,25 +5,25 @@ using UnityEngine;
 
 public class Map
 {
-    public int width;
-    public int height;
-    public Region[,] grid;
+    public int Width;
+    public int Height;
+    public Region[,] Grid;
 
     public Map(int width, int height)
     {
-        this.width = width;
-        this.height = height;
-        grid = new Region[width, height];
+        Width = width;
+        Height = height;
+        Grid = new Region[width, height];
         InitializeGrid();
     }
 
     void InitializeGrid()
     {
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < Width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < Height; y++)
             {
-                grid[x, y] = new Region(this, x, y);
+                Grid[x, y] = new Region(this, x, y);
             }
         }
 
@@ -34,15 +34,15 @@ public class Map
             //  4 3  |  * * * *
             Region neighbor(int _x, int _y)
             {
-                try { return grid[_x, _y]; }
+                try { return Grid[_x, _y]; }
                 catch (Exception) { return null; }
             }
 
             Mathf.PerlinNoise(1, 1);
-            int x = region.x;
-            int y = region.y;
+            int x = region.X;
+            int y = region.Y;
 
-            region.neighborhood = y % 2 == 0
+            region.Neighborhood = y % 2 == 0
                 ? new Region[] {
                     neighbor(x, y - 1), neighbor(x + 1, y - 1), neighbor(x + 1, y),
                     neighbor(x + 1, y + 1), neighbor(x, y + 1), neighbor(x - 1, y) }
@@ -54,36 +54,79 @@ public class Map
 
     public void Sweep(Action<Region> action)
     {
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < Width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < Height; y++)
             {
-                action(grid[x, y]);
+                action(Grid[x, y]);
+            }
+        }
+    }
+    public void Sweep(Func<Region, bool> function)
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                if(function(Grid[x, y])) return;
             }
         }
     }
 
     public void BFS(Action<Region> action)
     {
-        bool[,] visited = new bool[width, height];
+        bool[,] visited = new bool[Width, Height];
         Queue<Region> queue = new Queue<Region>();
 
         visited[0, 0] = true;
-        queue.Enqueue(grid[0, 0]);
+        queue.Enqueue(Grid[0, 0]);
         
         while (queue.Count != 0)
         {
             Region region = queue.Dequeue();
-            foreach(Region neighbor in region.neighborhood)
-            {
-                if(!visited[neighbor.x, neighbor.y])
-                {
-                    action(neighbor);
 
+            action(region);
+
+            foreach (Region neighbor in region.Neighborhood)
+            {
+                if(neighbor != null && !visited[neighbor.X, neighbor.Y])
+                {
                     queue.Enqueue(neighbor);
-                    visited[neighbor.x, neighbor.y] = true;
+                    visited[neighbor.X, neighbor.Y] = true;
                 }
             }
         }
+    }
+    public void BFS(Func<Region, bool> function)
+    {
+        bool[,] visited = new bool[Width, Height];
+        Queue<Region> queue = new Queue<Region>();
+
+        visited[0, 0] = true;
+        queue.Enqueue(Grid[0, 0]);
+
+        while (queue.Count != 0)
+        {
+            Region region = queue.Dequeue();
+
+            if(function(region)) return;
+
+            foreach (Region neighbor in region.Neighborhood)
+            {
+                if (neighbor != null && !visited[neighbor.X, neighbor.Y])
+                {
+                    queue.Enqueue(neighbor);
+                    visited[neighbor.X, neighbor.Y] = true;
+                }
+            }
+        }
+    }
+
+    public static float DistanceBetween(Region region1, Region region2)
+    {
+        Vector2 vector1 = new Vector2(region1.XHex, region1.YHex);
+        Vector2 vector2 = new Vector2(region2.XHex, region2.YHex);
+
+        return (vector1 - vector2).magnitude;
     }
 }

@@ -5,68 +5,115 @@ using UnityEngine;
 
 public class MapBehaviour : MonoBehaviour
 {
-    public GameObject regionPrefab;
+    public GameObject RegionPrefab;
 
-    public int wGrid, hGrid;
+    public int WGrid, HGrid;
     [Range(0, 255)]
-    public float xOffset, yOffset;
+    public float XOffset, YOffset;
     [Range(0f, 1f)]
-    public float scale;
+    public float Scale;
     [Range(0f, 1f)]
-    public float seaLevel;
+    public float SeaLevel;
 
     private float pixelsPerUnit;
     private Map map;
-    private
 
     void Start()
     {
-        
-        Sprite sprite = regionPrefab.GetComponent<SpriteRenderer>().sprite;
+        Sprite sprite = RegionPrefab.GetComponent<SpriteRenderer>().sprite;
         pixelsPerUnit = sprite.rect.width / sprite.bounds.size.x;
-
-        map = new Map(wGrid, hGrid);
+        map = new Map(WGrid, HGrid);
 
         map.Sweep((region) =>
         {
-            GameObject regionGameObject = Instantiate(regionPrefab, transform, false);
-            regionGameObject.GetComponent<RegionBehaviour>().region = region;
+            GameObject regionGameObject =
+                Instantiate(RegionPrefab, transform, false);
+            regionGameObject.GetComponent<RegionBehaviour>().Region = region;
 
-            float regionSpriteWidth =
-                regionGameObject.GetComponent<SpriteRenderer>().sprite.rect.width;
-            float regionSpriteHeight =
-                regionGameObject.GetComponent<SpriteRenderer>().sprite.rect.height;
+            SpriteRenderer spriteRenderer =
+                regionGameObject.GetComponent<SpriteRenderer>();
+            float regionSpriteWidth = spriteRenderer.sprite.rect.width;
+            float regionSpriteHeight = spriteRenderer.sprite.rect.height;
 
             regionGameObject.transform.Translate(
-                regionSpriteWidth * region.xHex / pixelsPerUnit,
-                regionSpriteHeight * region.yHex / pixelsPerUnit, 0);
+                regionSpriteWidth * region.XHex / pixelsPerUnit,
+                regionSpriteHeight * region.YHex / pixelsPerUnit, 0);
         });
 
         GenerateNewMap();
+        DistributePopulation();
     }
 
-    void Update()
-    {
-        
-    }
+    void Update() { }
 
     private void GenerateNewMap()
     {
-        xOffset = UnityEngine.Random.Range(0, 255);
-        yOffset = UnityEngine.Random.Range(0, 255);
+        XOffset = UnityEngine.Random.Range(0, 255);
+        YOffset = UnityEngine.Random.Range(0, 255);
         float xNoise, yNoise;
 
         map.Sweep((region) =>
         {
-            xNoise = xOffset + region.xHex * scale;
-            yNoise = yOffset + region.yHex * scale;
+            xNoise = XOffset + region.XHex * Scale;
+            yNoise = YOffset + region.YHex * Scale;
 
             region.Altitude =
                 Mathf.PerlinNoise(xNoise, yNoise) * 0.5f +
                 Mathf.PerlinNoise(xNoise / 3, yNoise / 3) * 0.5f;
 
-            region.type = region.Altitude <= seaLevel ?
+            region.Type = region.Altitude <= SeaLevel ?
                 RegionType.Water : RegionType.Ground;
         });
+
+        map.Sweep((region) =>
+        {
+            if (region.Type == RegionType.Ground)
+            {
+                foreach (Region neighbor in region.Neighborhood)
+                {
+                    if (neighbor != null && neighbor.Type == RegionType.Water)
+                    {
+                        region.Type = RegionType.Coast;
+                        break;
+                    }
+                }
+            }
+        });
     }
+
+    private void DistributePopulation()
+    {
+        XOffset = UnityEngine.Random.Range(0, 255);
+        YOffset = UnityEngine.Random.Range(0, 255);
+        float xNoise, yNoise;
+
+        map.Sweep((region) =>
+        {
+            if (region.Type != RegionType.Water)
+            {
+                xNoise = XOffset + region.XHex * Scale;
+                yNoise = YOffset + region.YHex * Scale;
+
+                Region nearestWater = region;
+                map.BFS((_region) =>
+                {
+                    if (_region.Type == RegionType.Water)
+                    {
+                        nearestWater = _region;
+                        return true;
+                    }
+                    return false;
+                });
+
+                float distance = Map.DistanceBetween(region, nearestWater);
+                float x = Mathf.PerlinNoise(xNoise, yNoise) *
+                    (16 * (1 / distance + (1 - region.Altitude)) - 10);
+                region.PopulationDensity = Sigmoid(x);
+            }
+        });
+    }
+
+    private float Sigmoid(float x) =>
+        1 / (1 + (float)Math.Pow(Math.E, -x));
+
 }
