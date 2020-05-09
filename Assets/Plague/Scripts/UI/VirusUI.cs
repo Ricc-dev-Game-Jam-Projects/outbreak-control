@@ -2,21 +2,24 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class VirusUI : MonoBehaviour
 {
     public TextMeshProUGUI PlagueName;
     public TextMeshProUGUI PlagueDescription;
     public TextMeshProUGUI PlagueSkillName;
-    public GameObject skillTree;
+    public SkillBranchUI[] SkillBranchs;
 
     public Button ArrowLeft;
     public Button ArrowRight;
 
     public Virus MyVirus;
-    public Perk[][] perks;
+    public Perk[,] perks;
 
     public int Page = 0;
+
+    private PerkGenerator perkGenerator;
 
     private void Start()
     {
@@ -43,15 +46,15 @@ public class VirusUI : MonoBehaviour
         });
     }
 
-    public void SetVirus(Virus virus)
+    public void SetVirus(Virus virus, PerkGenerator perkGenerator)
     {
+        this.perkGenerator = perkGenerator;
         MyVirus = virus;
         PlagueName.text = virus.Name;
         PlagueDescription.text = virus.ToString();
-        perks = new Perk[virus.PerkNumber][];
-        perks[0] = virus.MySymptoms.ToArray();
-        perks[1] = virus.MyTransmissions.ToArray();
 
+        perks = new Perk[perkGenerator.SymptomsMaxLevel, perkGenerator.SymptomsMaxLevel];
+        perks = perkGenerator.SymptomsPerks;
 
         UpdateTree();
     }
@@ -62,10 +65,9 @@ public class VirusUI : MonoBehaviour
         // skill tree
         string Skillkey = MyVirus.Perks.Keys.ElementAt(Page);
         PlagueSkillName.text = Skillkey;
-        SkillBranchUI[] skills = skillTree.GetComponentsInChildren<SkillBranchUI>();
-        for(int i = 0; i < skills.Length; i++)
+        for(int i = 0; i < SkillBranchs.Length; i++)
         {
-            skills[i].UpdateSkills(MyVirus.Perks[Skillkey]);
+            SkillBranchs[i].UpdateSkills(MyVirus.Perks[Skillkey]);
         }
     }
 }

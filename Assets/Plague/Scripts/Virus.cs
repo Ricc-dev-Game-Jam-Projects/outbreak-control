@@ -32,12 +32,14 @@ public class Virus
         string transmissions = "";
         foreach (Transmission t in MyTransmissions)
         {
+            if (t == null) continue;
             transmissions += " " + t.Name;
         }
 
         string symptoms = "";
         foreach (Symptom s in MySymptoms)
         {
+            if (s == null) continue;
             symptoms += " " + s.Name;
         }
 

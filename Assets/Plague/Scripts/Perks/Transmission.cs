@@ -36,5 +36,10 @@ public class Transmission : Perk
     {
         Infected += Infected * PerkLevel/10; // incrementa o numero de infectados somando ele com o numero atual * level do perk/ 10
     }
+
+    public Transmission Clone()
+    {
+        return (Transmission)MemberwiseClone();
+    }
 }
 

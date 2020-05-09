@@ -34,9 +34,11 @@ public class PerkGenerator
         symptoms = new Symptom[SymptomsMaxLevel];
         transmissions = new Transmission[TransmissionMaxLevel];
 
-        while (CanUsePoints())
+        int pog = 500;
+
+        while (CanUsePoints() && pog != 0)
         {
-            int typ = Random.Range(0, 1);
+            int typ = Random.Range(0, 2);
 
             int subtype;
 
@@ -59,9 +61,29 @@ public class PerkGenerator
                         }
                     }
                     break;
+                case 1:
+                    subtype = Random.Range(0, TransmissionSize / TransmissionMaxLevel);
+                    if (transmissions[subtype] == null)
+                    {
+                        transmissions[subtype] = TransmissionPerks[subtype, 0].Clone();
+                        UsedPoints++;
+                        Debug.Log("Added " + transmissions[subtype].Name + " Points used: " + UsedPoints);
+                    }
+                    else
+                    {
+                        if (transmissions[subtype].PerkLevel < TransmissionMaxLevel)
+                        {
+                            transmissions[subtype].EvolvePerk(TransmissionPerks[subtype, transmissions[subtype].PerkLevel]);
+                            UsedPoints++;
+                            Debug.Log("Added " + transmissions[subtype].Name + " Points used: " + UsedPoints);
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
+
+            pog--;
         }
     }
 
@@ -347,6 +369,7 @@ public class PerkGenerator
             {
                 t.ImagePath = PerkPath + "zoonosis.png";
             }
+            cont++;
         }
     }
 }

@@ -27,20 +27,20 @@ public class PlaneManager : MonoBehaviour
         RegionBehaviour[] regions = FindObjectsOfType<RegionBehaviour>();
         foreach(RegionBehaviour region in regions)
         {
-            region.region.regionClicked += () =>
-            {
-                if(SourceRegion == null)
-                {
-                    SourceRegion = region;
-                    return;
-                } else
-                {
-                    DestinationRegion = region;
-                    SendPlane(SourceRegion, DestinationRegion);
-                    SourceRegion = null;
-                    DestinationRegion = null;
-                }
-            };
+            //region.region.regionClicked += () =>
+            //{
+            //    if(SourceRegion == null)
+            //    {
+            //        SourceRegion = region;
+            //        return;
+            //    } else
+            //    {
+            //        DestinationRegion = region;
+            //        SendPlane(SourceRegion, DestinationRegion);
+            //        SourceRegion = null;
+            //        DestinationRegion = null;
+            //    }
+            //};
         }
     }
 
