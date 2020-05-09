@@ -14,36 +14,36 @@ public class RegionBehaviour : MonoBehaviour
 
     void Start()
     {
+        Color altitude = new Color(0,0,0,1);
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         float r, g, b, a = Region.Altitude;
         switch (Region.Type)
         {
             case RegionType.Ground:
-                r = GroundColor.r;
-                g = GroundColor.g;
-                b = GroundColor.b;
-                a = 1 - a;
+                spriteRenderer.color = Color.Lerp(altitude, GroundColor, 1 - a);
                 break;
             case RegionType.Coast:
-                r = (GroundColor.r + WaterColor.r) / 2;
-                g = (GroundColor.g + WaterColor.g) / 2;
-                b = (GroundColor.b + WaterColor.b) / 2;
-                a = 1 - a;
+                Color coastColor = Color.Lerp(GroundColor, WaterColor, 0.5f);
+                spriteRenderer.color = Color.Lerp(altitude, coastColor, 1 - a);
+                //r = (GroundColor.r + WaterColor.r) / 2;
+                //g = (GroundColor.g + WaterColor.g) / 2;
+                //b = (GroundColor.b + WaterColor.b) / 2;
+                //a = 1 - a;
                 break;
             case RegionType.Water:
-                r = WaterColor.r;
-                g = WaterColor.g;
-                b = WaterColor.b;
-                break;
-            default:
-                r = g = b = 0;
+                spriteRenderer.color = Color.Lerp(altitude, WaterColor, a);
+                //r = WaterColor.r;
+                //g = WaterColor.g;
+                //b = WaterColor.b;
                 break;
         }
+
 
         GetComponentInChildren<DelimiterHandlerBehaviour>().SetDelimiter(Region);
         GetComponentInChildren<PopulationBehaviour>().
             SetPopulation(Region.PopulationDensity);
 
-        GetComponent<SpriteRenderer>().color = new Color(r * a, g * a, b * a, 1);
+        //GetComponent<SpriteRenderer>().color = new Color(r * a, g * a, b * a, 1);
     }
 
     void Update() { }
