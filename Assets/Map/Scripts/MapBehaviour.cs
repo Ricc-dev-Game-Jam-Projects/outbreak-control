@@ -44,7 +44,6 @@ public class MapBehaviour : MonoBehaviour
 
         map.GenerateNewMap(Scale, SeaLevel);
         map.DistributePopulation(Scale);
-        //map.SetDistricts(numberDistricts);
     }
 
     void Update() { }

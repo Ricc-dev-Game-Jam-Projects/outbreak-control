@@ -7,7 +7,6 @@ public class Map
 {
     public int Width;
     public int Height;
-    //public Dictionary<RegionType, int> NumberRegions;
     public Region[,] Grid;
 
     public Map(int width, int height)
@@ -15,12 +14,7 @@ public class Map
         Width = width;
         Height = height;
         Grid = new Region[width, height];
-        //NumberRegions = new Dictionary<RegionType, int>()
-        //{
-        //    { RegionType.Coast, 0 },
-        //    { RegionType.Ground, 0 },
-        //    { RegionType.Water, 0 },
-        //};
+
         InitializeGrid();
     }
 
@@ -103,10 +97,10 @@ public class Map
             if (region.Type != RegionType.Water)
             {
                 xNoise = xOffset + region.XHex * scale;
-                yNoise = xOffset + region.YHex * scale;
+                yNoise = yOffset + region.YHex * scale;
 
                 Region nearestWater = region;
-                BFS((_region) =>
+                BFS(region, (_region) =>
                 {
                     if (_region.Type == RegionType.Water)
                     {
@@ -117,46 +111,13 @@ public class Map
                 });
 
                 float distance = DistanceBetween(region, nearestWater);
-                float x = Mathf.PerlinNoise(xNoise, yNoise) *
-                    (16 * (1 / distance + (1 - region.Altitude)) - 10);
-                region.PopulationDensity = Sigmoid(x);
+                float x = 
+                    (2 * 1 / distance + 5 * (1 - region.Altitude) - 2);
+                region.PopulationDensity =
+                    Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
             }
         });
     }
-
-    //public void SetDistricts(int numberDistricts)
-    //{
-    //    int regionsPerDistrict =
-    //        (NumberRegions[RegionType.Ground] +
-    //        NumberRegions[RegionType.Coast]) / numberDistricts;
-
-    //    for (int i = 1; i <= numberDistricts; i++)
-    //    {
-    //        int x = UnityEngine.Random.Range(0, Width);
-    //        int y = UnityEngine.Random.Range(0, Height);
-    //        Region startDistrict = Grid[x, y];
-    //        int nRegions = regionsPerDistrict;
-
-    //        if (startDistrict.Type == RegionType.Water ||
-    //            startDistrict.District != 0) { i--; continue; }
-
-    //        startDistrict.District = i;
-
-    //        BFS(startDistrict, (region) =>
-    //        {
-    //            if (region.Type != RegionType.Water)
-    //            {
-    //                if (nRegions == 0) return true;
-    //                if (region.District == 0)
-    //                {
-    //                    region.District = i;
-    //                    nRegions--;
-    //                }
-    //            }
-    //            return false;
-    //        });
-    //    }
-    //}
 
     public void Sweep(Action<Region> action)
     {

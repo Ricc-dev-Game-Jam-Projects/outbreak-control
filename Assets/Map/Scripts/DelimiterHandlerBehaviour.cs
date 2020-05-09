@@ -11,16 +11,22 @@ public class DelimiterHandlerBehaviour : MonoBehaviour
     {
         for (int i = 0; i < region.Neighborhood.Length; i++)
         {
-            if (region.Neighborhood[i] != null &&
-                region.Neighborhood[i].Level < region.Level)
+            Region neighbor = region.Neighborhood[i];
+            if (neighbor != null &&
+                neighbor.Level < region.Level)
             {
+                if (region.Type == RegionType.Coast &&
+                    neighbor.Type == RegionType.Water) continue;
+
                 GameObject delimiter =
                     Instantiate(DelimiterPrefab, transform, false);
                 delimiter.transform.rotation =
                     Quaternion.Euler(0, 0, 60 * i + 120);
-                delimiter.GetComponent<SpriteRenderer>().color =
-                    new Color(1, 1, 1, 0.3f);
-                delimiter.GetComponent<SpriteRenderer>().sprite = DelimiterSprite;
+                SpriteRenderer spriteRenderer =
+                        delimiter.GetComponent<SpriteRenderer>();
+                spriteRenderer.color = new Color(1, 1, 1, 0.2f);
+                spriteRenderer.sprite = DelimiterSprite;
+                spriteRenderer.sortingOrder = 3;
             }
         }
     }

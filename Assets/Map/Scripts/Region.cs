@@ -12,7 +12,6 @@ public class Region
     public Region[] Neighborhood;
 
     public RegionType Type;
-    //public int District;
     public int Level;
     public float PopulationDensity;
     private float altitude;
