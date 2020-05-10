@@ -6,6 +6,7 @@ using UnityEngine;
 public class MapBehaviour : MonoBehaviour
 {
     public GameObject RegionPrefab;
+    public static MapBehaviour instance;
 
     public int WGrid, HGrid;
     [Range(0, 255)]
@@ -19,6 +20,12 @@ public class MapBehaviour : MonoBehaviour
 
     private float pixelsPerUnit;
     private Map map;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
+    }
 
     void Start()
     {
@@ -47,4 +54,12 @@ public class MapBehaviour : MonoBehaviour
     }
 
     void Update() { }
+
+    public void ShowPopulation(bool show)
+    {
+        foreach(Transform t in gameObject.transform)
+        {
+            t.GetComponent<RegionBehaviour>().ShowPopulation(show);
+        }
+    }
 }

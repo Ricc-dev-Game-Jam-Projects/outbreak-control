@@ -9,14 +9,18 @@ public class RegionBehaviour : MonoBehaviour
     [SerializeField]
     public Color GroundColor;
     public Color WaterColor;
+    public GameObject Select;
 
     public Region Region;
 
+    private PopulationBehaviour populationBehaviour;
+
     void Start()
     {
+
         Color altitude = new Color(0, 0, 0, 1);
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        PopulationBehaviour populationBehaviour =
+        populationBehaviour =
             GetComponentInChildren<PopulationBehaviour>();
         MarginHandlerBehaviour marginHandlerBehaviour =
             GetComponentInChildren<MarginHandlerBehaviour>();
@@ -47,10 +51,21 @@ public class RegionBehaviour : MonoBehaviour
         GetComponentInChildren<DelimiterHandlerBehaviour>().SetDelimiter(Region);
     }
 
+    public void ShowPopulation(bool show)
+    {
+        if (Region.Type != RegionType.Water)
+            populationBehaviour.gameObject.SetActive(show);
+    }
+
     void Update() { }
 
     private void OnMouseEnter()
     {
-        
+        Select.SetActive(true);
+    }
+
+    private void OnMouseExit()
+    {
+        Select.SetActive(false);
     }
 }
