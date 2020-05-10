@@ -8,42 +8,63 @@ public class RegionBehaviour : MonoBehaviour
 {
     public Color GroundColor;
     public Color WaterColor;
+    public GameObject Select;
 
     public Region Region;
 
+    private PopulationBehaviour populationBehaviour;
+
     void Start()
     {
-        float r, g, b, a = Region.Altitude;
+
+        Color altitude = new Color(0, 0, 0, 1);
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        populationBehaviour =
+            GetComponentInChildren<PopulationBehaviour>();
+        MarginHandlerBehaviour marginHandlerBehaviour =
+            GetComponentInChildren<MarginHandlerBehaviour>();
+
         switch (Region.Type)
         {
             case RegionType.Ground:
-                r = GroundColor.r;
-                g = GroundColor.g;
-                b = GroundColor.b;
-                a = 1 - a;
+                spriteRenderer.color =
+                    Color.Lerp(altitude, GroundColor, 1 - Region.Altitude);
+
+                populationBehaviour.SetPopulation(Region.PopulationDensity);
                 break;
             case RegionType.Coast:
-                r = (GroundColor.r + WaterColor.r) / 2;
-                g = (GroundColor.g + WaterColor.g) / 2;
-                b = (GroundColor.b + WaterColor.b) / 2;
-                a = 1 - a;
+                spriteRenderer.color =
+                    Color.Lerp(altitude, GroundColor, 1 - Region.Altitude);
+
+                marginHandlerBehaviour.SetMargin(Region,
+                    Color.Lerp(altitude, WaterColor, Region.Altitude));
+                populationBehaviour.SetPopulation(Region.PopulationDensity);
                 break;
             case RegionType.Water:
-                r = WaterColor.r;
-                g = WaterColor.g;
-                b = WaterColor.b;
-                break;
-            default:
-                r = g = b = 0;
+                spriteRenderer.color =
+                    Color.Lerp(altitude, WaterColor, Region.Altitude);
+                Destroy(populationBehaviour.gameObject);
                 break;
         }
 
         GetComponentInChildren<DelimiterHandlerBehaviour>().SetDelimiter(Region);
-        GetComponentInChildren<PopulationBehaviour>().
-            SetPopulation(Region.PopulationDensity);
+    }
 
-        GetComponent<SpriteRenderer>().color = new Color(r * a, g * a, b * a, 1);
+    public void ShowPopulation(bool show)
+    {
+        if (Region.Type != RegionType.Water)
+            populationBehaviour.gameObject.SetActive(show);
     }
 
     void Update() { }
+
+    private void OnMouseEnter()
+    {
+        Select.SetActive(true);
+    }
+
+    private void OnMouseExit()
+    {
+        Select.SetActive(false);
+    }
 }

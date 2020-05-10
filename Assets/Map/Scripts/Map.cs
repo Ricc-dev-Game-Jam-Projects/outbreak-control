@@ -8,24 +8,22 @@ public class Map
     public int Width;
     public int Height;
     public Region[,] Grid;
+    public List<City> cities;
 
     public Map(int width, int height)
     {
         Width = width;
         Height = height;
         Grid = new Region[width, height];
+
         InitializeGrid();
     }
 
     void InitializeGrid()
     {
         for (int x = 0; x < Width; x++)
-        {
             for (int y = 0; y < Height; y++)
-            {
                 Grid[x, y] = new Region(this, x, y);
-            }
-        }
 
         Sweep((region) =>
         {
@@ -52,35 +50,105 @@ public class Map
         });
     }
 
+    public void GenerateNewMap(float scale, float seaLevel)
+    {
+        float xOffset = UnityEngine.Random.Range(0, 255);
+        float yOffset = UnityEngine.Random.Range(0, 255);
+        float xNoise, yNoise;
+
+        Sweep((region) =>
+        {
+            xNoise = xOffset + region.XHex * scale;
+            yNoise = yOffset + region.YHex * scale;
+
+            region.Altitude =
+                Mathf.PerlinNoise(xNoise, yNoise) * 0.5f +
+                Mathf.PerlinNoise(xNoise / 3, yNoise / 3) * 0.5f;
+
+            region.Type = region.Altitude <= seaLevel ?
+                RegionType.Water : RegionType.Ground;
+        });
+
+        Sweep((region) =>
+        {
+            if (region.Type == RegionType.Ground)
+            {
+                foreach (Region neighbor in region.Neighborhood)
+                {
+                    if (neighbor != null && neighbor.Type == RegionType.Water)
+                    {
+                        region.Type = RegionType.Coast;
+                        break;
+                    }
+                }
+            }
+        });
+
+        //Sweep((region) => NumberRegions[region.Type]++);
+    }
+
+    public void DistributePopulation(float scale)
+    {
+        float xOffset = UnityEngine.Random.Range(0, 255);
+        float yOffset = UnityEngine.Random.Range(0, 255);
+        float xNoise, yNoise;
+
+        Sweep((region) =>
+        {
+            if (region.Type != RegionType.Water)
+            {
+                xNoise = xOffset + region.XHex * scale;
+                yNoise = yOffset + region.YHex * scale;
+
+                Region nearestWater = region;
+                BFS(region, (_region) =>
+                {
+                    if (_region.Type == RegionType.Water)
+                    {
+                        nearestWater = _region;
+                        return true;
+                    }
+                    return false;
+                });
+
+                float distance = DistanceBetween(region, nearestWater);
+                float x = 
+                    (2 * 1 / distance + 5 * (1 - region.Altitude) - 2);
+                region.PopulationDensity =
+                    Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
+            }
+        });
+    }
+
+    public void DefineCities()
+    {
+        Sweep((region) =>
+        {
+            
+        });
+    }
+
     public void Sweep(Action<Region> action)
     {
         for (int x = 0; x < Width; x++)
-        {
             for (int y = 0; y < Height; y++)
-            {
                 action(Grid[x, y]);
-            }
-        }
     }
     public void Sweep(Func<Region, bool> function)
     {
         for (int x = 0; x < Width; x++)
-        {
             for (int y = 0; y < Height; y++)
-            {
-                if(function(Grid[x, y])) return;
-            }
-        }
+                if (function(Grid[x, y])) return;
     }
 
-    public void BFS(Action<Region> action)
+    public void BFS(Region first, Action<Region> action)
     {
         bool[,] visited = new bool[Width, Height];
         Queue<Region> queue = new Queue<Region>();
 
-        visited[0, 0] = true;
-        queue.Enqueue(Grid[0, 0]);
-        
+        visited[first.X, first.Y] = true;
+        queue.Enqueue(first);
+
         while (queue.Count != 0)
         {
             Region region = queue.Dequeue();
@@ -88,13 +156,55 @@ public class Map
             action(region);
 
             foreach (Region neighbor in region.Neighborhood)
-            {
-                if(neighbor != null && !visited[neighbor.X, neighbor.Y])
+                if (neighbor != null && !visited[neighbor.X, neighbor.Y])
                 {
                     queue.Enqueue(neighbor);
                     visited[neighbor.X, neighbor.Y] = true;
                 }
-            }
+        }
+    }
+    public void BFS(Action<Region> action)
+    {
+        bool[,] visited = new bool[Width, Height];
+        Queue<Region> queue = new Queue<Region>();
+
+        visited[0, 0] = true;
+        queue.Enqueue(Grid[0, 0]);
+
+        while (queue.Count != 0)
+        {
+            Region region = queue.Dequeue();
+
+            action(region);
+
+            foreach (Region neighbor in region.Neighborhood)
+                if (neighbor != null && !visited[neighbor.X, neighbor.Y])
+                {
+                    queue.Enqueue(neighbor);
+                    visited[neighbor.X, neighbor.Y] = true;
+                }
+        }
+    }
+    public void BFS(Region first, Func<Region, bool> function)
+    {
+        bool[,] visited = new bool[Width, Height];
+        Queue<Region> queue = new Queue<Region>();
+
+        visited[first.X, first.Y] = true;
+        queue.Enqueue(first);
+
+        while (queue.Count != 0)
+        {
+            Region region = queue.Dequeue();
+
+            if (function(region)) return;
+
+            foreach (Region neighbor in region.Neighborhood)
+                if (neighbor != null && !visited[neighbor.X, neighbor.Y])
+                {
+                    queue.Enqueue(neighbor);
+                    visited[neighbor.X, neighbor.Y] = true;
+                }
         }
     }
     public void BFS(Func<Region, bool> function)
@@ -109,16 +219,14 @@ public class Map
         {
             Region region = queue.Dequeue();
 
-            if(function(region)) return;
+            if (function(region)) return;
 
             foreach (Region neighbor in region.Neighborhood)
-            {
                 if (neighbor != null && !visited[neighbor.X, neighbor.Y])
                 {
                     queue.Enqueue(neighbor);
                     visited[neighbor.X, neighbor.Y] = true;
                 }
-            }
         }
     }
 
@@ -129,4 +237,7 @@ public class Map
 
         return (vector1 - vector2).magnitude;
     }
+
+    private static float Sigmoid(float x) =>
+        1 / (1 + (float)Math.Pow(Math.E, -x));
 }

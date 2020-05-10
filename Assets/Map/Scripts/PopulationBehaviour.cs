@@ -12,5 +12,6 @@ public class PopulationBehaviour : MonoBehaviour
             PopulationColor.r,
             PopulationColor.g,
             PopulationColor.b, populationDensity);
+        //transform.localScale = new Vector3(populationDensity, populationDensity, 0);
     }
 }
