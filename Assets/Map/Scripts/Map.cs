@@ -8,6 +8,7 @@ public class Map
     public int Width;
     public int Height;
     public Region[,] Grid;
+    public List<City> cities;
 
     public Map(int width, int height)
     {
@@ -116,6 +117,14 @@ public class Map
                 region.PopulationDensity =
                     Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
             }
+        });
+    }
+
+    public void DefineCities()
+    {
+        Sweep((region) =>
+        {
+
         });
     }
 

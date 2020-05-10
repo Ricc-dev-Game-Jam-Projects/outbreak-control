@@ -16,31 +16,31 @@ public class RegionBehaviour : MonoBehaviour
     {
         Color altitude = new Color(0, 0, 0, 1);
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        PopulationBehaviour populationBehaviour =
+            GetComponentInChildren<PopulationBehaviour>();
+        MarginHandlerBehaviour marginHandlerBehaviour =
+            GetComponentInChildren<MarginHandlerBehaviour>();
+
         switch (Region.Type)
         {
             case RegionType.Ground:
                 spriteRenderer.color =
                     Color.Lerp(altitude, GroundColor, 1 - Region.Altitude);
 
-                GetComponentInChildren<PopulationBehaviour>().
-                    SetPopulation(Region.PopulationDensity);
+                populationBehaviour.SetPopulation(Region.PopulationDensity);
                 break;
             case RegionType.Coast:
                 spriteRenderer.color =
                     Color.Lerp(altitude, GroundColor, 1 - Region.Altitude);
-                //Color coastColor = Color.Lerp(GroundColor, WaterColor, 0.5f);
-                //spriteRenderer.color =
-                //    Color.Lerp(altitude, coastColor, 1 - Region.Altitude);
 
-                GetComponentInChildren<MarginHandlerBehaviour>().SetMargin(
-                    Region, Color.Lerp(altitude, WaterColor, Region.Altitude));
-                GetComponentInChildren<PopulationBehaviour>().
-                    SetPopulation(Region.PopulationDensity);
+                marginHandlerBehaviour.SetMargin(Region,
+                    Color.Lerp(altitude, WaterColor, Region.Altitude));
+                populationBehaviour.SetPopulation(Region.PopulationDensity);
                 break;
             case RegionType.Water:
                 spriteRenderer.color =
                     Color.Lerp(altitude, WaterColor, Region.Altitude);
-                Destroy(GetComponentInChildren<PopulationBehaviour>().gameObject);
+                Destroy(populationBehaviour.gameObject);
                 break;
         }
 
@@ -48,4 +48,9 @@ public class RegionBehaviour : MonoBehaviour
     }
 
     void Update() { }
+
+    private void OnMouseEnter()
+    {
+        
+    }
 }

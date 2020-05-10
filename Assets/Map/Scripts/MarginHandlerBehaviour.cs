@@ -12,16 +12,19 @@ public class MarginHandlerBehaviour : MonoBehaviour
         int waterSequence = 0;
         for (int i = 0; i < region.Neighborhood.Length; i++)
         {
-            if (region.Neighborhood[i] != null)
+            Region currentNeighbor = region.Neighborhood[i];
+
+            if (currentNeighbor != null)
             {
-                if (region.Neighborhood[i].Type == RegionType.Water)
+                if (currentNeighbor.Type == RegionType.Water)
                     waterSequence++;
-                if (waterSequence != 0)
+                else if (waterSequence > 0)
                 {
                     GameObject margin =
                     Instantiate(MarginPrefab, transform, false);
+
                     margin.transform.rotation =
-                        Quaternion.Euler(0, 0, 60 * i + 180);
+                        Quaternion.Euler(0, 0, 60 * i + 60);
                     SpriteRenderer spriteRenderer =
                         margin.GetComponent<SpriteRenderer>();
                     spriteRenderer.color = waterColor;
@@ -30,7 +33,20 @@ public class MarginHandlerBehaviour : MonoBehaviour
 
                     waterSequence = 0;
                 }
-            }
+            } else waterSequence++;
+        }
+        if(waterSequence > 0)
+        {
+            GameObject margin =
+                    Instantiate(MarginPrefab, transform, false);
+
+            margin.transform.rotation =
+                Quaternion.Euler(0, 0, 60 * 6 + 60);
+            SpriteRenderer spriteRenderer =
+                margin.GetComponent<SpriteRenderer>();
+            spriteRenderer.color = waterColor;
+            spriteRenderer.sprite = MarginSprite[waterSequence - 1];
+            spriteRenderer.sortingOrder = 2;
         }
     }
 }
