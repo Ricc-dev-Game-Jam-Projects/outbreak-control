@@ -15,7 +15,7 @@ public class VirusUI : MonoBehaviour
     public Button ArrowRight;
 
     public Virus MyVirus;
-    public Perk[,] perks;
+    public Perk[][] perks;
 
     public int Page = 0;
 
@@ -53,21 +53,31 @@ public class VirusUI : MonoBehaviour
         PlagueName.text = virus.Name;
         PlagueDescription.text = virus.ToString();
 
-        perks = new Perk[perkGenerator.SymptomsMaxLevel, perkGenerator.SymptomsMaxLevel];
-        perks = perkGenerator.SymptomsPerks;
-
         UpdateTree();
     }
 
     public void UpdateTree()
     {
         if (MyVirus == null) return;
-        // skill tree
         string Skillkey = MyVirus.Perks.Keys.ElementAt(Page);
         PlagueSkillName.text = Skillkey;
         for(int i = 0; i < SkillBranchs.Length; i++)
         {
-            SkillBranchs[i].UpdateSkills(MyVirus.Perks[Skillkey]);
+            switch(Page)
+            {
+                case 0:
+                    if(MyVirus.MySymptoms[i] != null)
+                        SkillBranchs[i].UpdateSkills(perkGenerator.SymptomsPerks[i], MyVirus.MySymptoms[i].PerkLevel);
+                    else
+                        SkillBranchs[i].UpdateSkills(perkGenerator.SymptomsPerks[i], 0);
+                    break;
+                case 1:
+                    if (MyVirus.MyTransmissions[i] != null)
+                        SkillBranchs[i].UpdateSkills(perkGenerator.TransmissionPerks[i], MyVirus.MyTransmissions[i].PerkLevel);
+                    else
+                        SkillBranchs[i].UpdateSkills(perkGenerator.TransmissionPerks[i], 0);
+                    break;
+            }
         }
     }
 }

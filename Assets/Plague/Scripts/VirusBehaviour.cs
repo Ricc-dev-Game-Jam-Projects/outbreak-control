@@ -23,6 +23,6 @@ public class VirusBehaviour : MonoBehaviour
         virus.MySymptoms.AddRange(symptoms);
         virus.MyTransmissions.AddRange(transmissions);
 
-        if(_VirusUI != null) _VirusUI.SetVirus(virus);
+        if(_VirusUI != null) _VirusUI.SetVirus(virus, perkGenerator);
     }
 }

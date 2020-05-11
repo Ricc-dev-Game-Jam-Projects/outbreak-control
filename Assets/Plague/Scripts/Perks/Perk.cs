@@ -10,7 +10,6 @@
     {
         this.Name = nome;
         this.Description = description;
-        this.PerkLevel = 1;
         ContagionRate = contagionRate;
         PerkLevel = perkLevel;
     }

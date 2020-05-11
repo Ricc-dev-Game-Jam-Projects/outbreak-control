@@ -13,8 +13,5 @@ public  class Culture
         DiseaseWeakness = new List<ETransmission>();
         Description = description;
     }
-            
-        
-
 }
 

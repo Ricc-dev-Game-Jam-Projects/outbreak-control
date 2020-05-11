@@ -21,7 +21,6 @@ public class Transmission : Perk
         base.EvolvePerk(PerkEvolved);
         if (PerkLevel < 4)
         {
-            PerkLevel++;
             ContagionRate += EvolveNum;
             EvolveNum -= 0.06f; //evoluir o perk nessa velocidade
         }
