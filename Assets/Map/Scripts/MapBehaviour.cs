@@ -15,8 +15,8 @@ public class MapBehaviour : MonoBehaviour
     public float Scale;
     [Range(0f, 1f)]
     public float SeaLevel;
-    [Range(1, 20)]
-    public int numberDistricts;
+    [Range(0f, 1f)]
+    public float RiverOccurrence;
 
     private float pixelsPerUnit;
     private Map map;
@@ -51,6 +51,7 @@ public class MapBehaviour : MonoBehaviour
 
         map.GenerateNewMap(Scale, SeaLevel);
         map.DistributePopulation(Scale);
+        map.DefineRivers(RiverOccurrence);
     }
 
     void Update() { }

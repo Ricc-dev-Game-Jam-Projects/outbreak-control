@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MarginHandlerBehaviour : MonoBehaviour
+public class MarginHandler : MonoBehaviour
 {
     public GameObject MarginPrefab;
     public Sprite[] MarginSprite;
@@ -21,7 +21,7 @@ public class MarginHandlerBehaviour : MonoBehaviour
                 else if (waterSequence > 0)
                 {
                     GameObject margin =
-                    Instantiate(MarginPrefab, transform, false);
+                        Instantiate(MarginPrefab, transform, false);
 
                     margin.transform.rotation =
                         Quaternion.Euler(0, 0, 60 * i + 60);
@@ -33,9 +33,10 @@ public class MarginHandlerBehaviour : MonoBehaviour
 
                     waterSequence = 0;
                 }
-            } else waterSequence++;
+            }
+            else waterSequence++;
         }
-        if(waterSequence > 0)
+        if (waterSequence > 0)
         {
             GameObject margin =
                     Instantiate(MarginPrefab, transform, false);

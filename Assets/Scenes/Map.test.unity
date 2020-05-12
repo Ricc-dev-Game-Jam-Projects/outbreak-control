@@ -709,7 +709,7 @@ MonoBehaviour:
   YOffset: 0
   Scale: 0.18
   SeaLevel: 0.4
-  numberDistricts: 5
+  RiverOccurrence: 0.25
 --- !u!4 &1979396597
 Transform:
   m_ObjectHideFlags: 0

@@ -2,19 +2,26 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Map
 {
     public int Width;
     public int Height;
     public Region[,] Grid;
-    public List<City> cities;
+    public Dictionary<RegionType, List<Region>> RegionCollections;
 
     public Map(int width, int height)
     {
         Width = width;
         Height = height;
         Grid = new Region[width, height];
+        RegionCollections = new Dictionary<RegionType, List<Region>>()
+        {
+            { RegionType.Coast, new List<Region>() },
+            { RegionType.Ground, new List<Region>() },
+            { RegionType.Water, new List<Region>() }
+        };
 
         InitializeGrid();
     }
@@ -82,9 +89,9 @@ public class Map
                     }
                 }
             }
-        });
 
-        //Sweep((region) => NumberRegions[region.Type]++);
+            RegionCollections[region.Type].Add(region);
+        });
     }
 
     public void DistributePopulation(float scale)
@@ -112,7 +119,7 @@ public class Map
                 });
 
                 float distance = DistanceBetween(region, nearestWater);
-                float x = 
+                float x =
                     (2 * 1 / distance + 5 * (1 - region.Altitude) - 2);
                 region.PopulationDensity =
                     Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
@@ -120,12 +127,33 @@ public class Map
         });
     }
 
-    public void DefineCities()
+    public void DefineRivers(float occurrence)
     {
-        Sweep((region) =>
+        foreach (Region coast in RegionCollections[RegionType.Coast])
         {
-            
-        });
+            if (UnityEngine.Random.Range(0f, 1f) > occurrence) continue;
+
+            var below = coast.GetLowerNeighbor();
+            var above = coast.GetHigherNeighbor();
+            Region currentRegion = coast;
+            Region previousRegion = coast.Neighborhood[below.i];
+
+            do
+            {
+                currentRegion.ForeachNeighbor((neighbor, i) =>
+                {
+                    if (neighbor == previousRegion) below = (neighbor, i);
+                });
+                above = currentRegion.GetHigherNeighbor();
+
+                currentRegion.River.exists = true;
+                currentRegion.River.pairs.Add((below.i, above.i));
+
+                previousRegion = currentRegion;
+                if(above.i != -1)
+                    currentRegion = currentRegion.Neighborhood[above.i];
+            } while (above.i != -1);
+        }
     }
 
     public void Sweep(Action<Region> action)
