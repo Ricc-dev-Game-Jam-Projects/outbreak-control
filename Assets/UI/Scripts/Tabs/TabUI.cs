@@ -14,20 +14,11 @@ public class TabUI : MonoBehaviour
     [SerializeField]
     public List<MacroTab> tabs;
 
-    public KeyCode MenuKey;
-
-    private Image myBackground;
-
-    private bool Closed = true;
+    public bool StartAllClosed = true;
 
     void Start()
     {
-        myBackground = GetComponent<Image>();
-        CloseAllTabs();
-        if (myBackground != null)
-        {
-            myBackground.enabled = !Closed;
-        }
+        if(StartAllClosed) CloseAllTabs();
 
         foreach(MacroTab tab in tabs)
         {
@@ -35,34 +26,15 @@ public class TabUI : MonoBehaviour
             {
                 btn.onClick.AddListener(() =>
                 {
-                    CloseAllTabs();
-                    tab.TheTab.gameObject.SetActive(true);
+                    if (!tab.TheTab.activeInHierarchy)
+                        CloseAllTabs();
+                    tab.TheTab.gameObject.SetActive(!tab.TheTab.activeInHierarchy);
                 });
             }
         }
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(MenuKey))
-        {
-            if (!Closed)
-            {
-                CloseAllTabs();
-                
-            } else if(tabs.Count >= 1)
-            {
-                tabs[0].TheTab.SetActive(true);
-            }
-            Closed = !Closed;
-            if (myBackground != null)
-            {
-                myBackground.enabled = !Closed;
-            }
-        }
-    }
-
-    void CloseAllTabs()
+    public void CloseAllTabs()
     {
         foreach(MacroTab tab in tabs)
         {

@@ -32,11 +32,6 @@ public class Symptom : Perk
         }
     }
 
-    public override void Skill()
-    {
-        
-    }
-
     public override void SetContagionRate()
     {
         
