@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 
 public class RegionBehaviour : MonoBehaviour
 {
-    [SerializeField]
     public Color GroundColor;
     public Color WaterColor;
     public GameObject Select;
