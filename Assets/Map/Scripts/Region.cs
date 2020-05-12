@@ -12,6 +12,7 @@ public class Region
     public Region[] Neighborhood;
 
     public RegionType Type;
+    public (bool exists, List<(int below, int above)> pairs) River;
     public int Level;
     public float PopulationDensity;
     private float altitude;
@@ -31,5 +32,34 @@ public class Region
         XHex = x - (float)y % 2 / 2;
         YHex = (float)3 * y / 4;
         Neighborhood = new Region[6];
+        River = (false, pairs: new List<(int below, int above)>());
+    }
+
+    public void ForeachNeighbor(Action<Region, int> action)
+    {
+        for (int i = 0; i < Neighborhood.Length; i++)
+            action(Neighborhood[i], i);
+    }
+
+    public (Region neighbor, int i) GetLowerNeighbor()
+    {
+        (Region neighbor, int i) pair = (this, -1);
+        ForeachNeighbor((neighbor, i) =>
+        {
+            if (neighbor != null && neighbor.altitude < pair.neighbor.altitude)
+                pair = (neighbor, i);
+        });
+        return pair;
+    }
+
+    public (Region neighbor, int i) GetHigherNeighbor()
+    {
+        (Region neighbor, int i) pair = (this, -1);
+        ForeachNeighbor((neighbor, i) =>
+        {
+            if (neighbor != null && neighbor.altitude > pair.neighbor.altitude)
+                pair = (neighbor, i);
+        });
+        return pair;
     }
 }

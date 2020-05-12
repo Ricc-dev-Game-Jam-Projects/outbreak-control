@@ -16,38 +16,41 @@ public class RegionBehaviour : MonoBehaviour
 
     void Start()
     {
-
-        Color altitude = new Color(0, 0, 0, 1);
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        populationBehaviour =
-            GetComponentInChildren<PopulationBehaviour>();
-        MarginHandlerBehaviour marginHandlerBehaviour =
-            GetComponentInChildren<MarginHandlerBehaviour>();
+        populationBehaviour = GetComponentInChildren<PopulationBehaviour>();
+        MarginHandler marginHandler = GetComponentInChildren<MarginHandler>();
+        RiverHandler riverHandler = GetComponentInChildren<RiverHandler>();
 
         switch (Region.Type)
         {
             case RegionType.Ground:
                 spriteRenderer.color =
-                    Color.Lerp(altitude, GroundColor, 1 - Region.Altitude);
+                    Color.Lerp(Color.black, GroundColor, 1 - Region.Altitude);
 
                 populationBehaviour.SetPopulation(Region.PopulationDensity);
                 break;
             case RegionType.Coast:
                 spriteRenderer.color =
-                    Color.Lerp(altitude, GroundColor, 1 - Region.Altitude);
+                    Color.Lerp(Color.black, GroundColor, 1 - Region.Altitude);
 
-                marginHandlerBehaviour.SetMargin(Region,
-                    Color.Lerp(altitude, WaterColor, Region.Altitude));
+                marginHandler.SetMargin(Region,
+                    Color.Lerp(Color.black, WaterColor, Region.Altitude));
                 populationBehaviour.SetPopulation(Region.PopulationDensity);
+                //riverHandler.SetRiver(Region, WaterColor);
                 break;
             case RegionType.Water:
                 spriteRenderer.color =
-                    Color.Lerp(altitude, WaterColor, Region.Altitude);
+                    Color.Lerp(Color.black, WaterColor, Region.Altitude);
                 Destroy(populationBehaviour.gameObject);
                 break;
         }
 
-        GetComponentInChildren<DelimiterHandlerBehaviour>().SetDelimiter(Region);
+        GetComponentInChildren<DelimiterHandler>().SetDelimiter(Region);
+
+        if (Region.River.exists)
+        {
+            riverHandler.SetRiver(Region, WaterColor);
+        }
     }
 
     public void ShowPopulation(bool show)

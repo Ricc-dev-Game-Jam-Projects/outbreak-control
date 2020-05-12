@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DelimiterHandlerBehaviour : MonoBehaviour
+public class DelimiterHandler : MonoBehaviour
 {
     public GameObject DelimiterPrefab;
     public Sprite DelimiterSprite;
