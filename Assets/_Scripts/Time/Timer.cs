@@ -123,7 +123,8 @@ public class Timer
     public void CalculateTime()
     {
         Day++;
-        //Second++;
+        OnDayPassed();
+        /*Second++;
 
         if (Second >= MinuteSize)
         {
@@ -156,7 +157,7 @@ public class Timer
         {
             Year++;
             Month = 1;
-        }
+        }*/
     }
 
     public void OnMinutePassed()
