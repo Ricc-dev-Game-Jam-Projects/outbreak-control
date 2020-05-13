@@ -94,6 +94,11 @@ public class Virus
         return FatalityCase + (intensity * FatalityCase); 
     }
 
+    public int SerialRangeRnd()
+    {
+        return (int) Mathf.Clamp(Random.Range(SerialRange - 1, SerialRange + 1), 0, 15);
+    }
+
     public static float CalculateSpreading(Virus v)
     {
         float TotalTransmission = v.Spreading;
