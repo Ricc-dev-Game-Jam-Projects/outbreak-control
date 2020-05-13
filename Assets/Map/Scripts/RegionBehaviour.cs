@@ -27,7 +27,7 @@ public class RegionBehaviour : MonoBehaviour
                 spriteRenderer.color =
                     Color.Lerp(Color.black, GroundColor, 1 - Region.Altitude);
 
-                populationBehaviour.SetPopulation(Region.PopulationDensity);
+                populationBehaviour.SetPopulation(Region.city.PopulationDensity);
                 break;
             case RegionType.Coast:
                 spriteRenderer.color =
@@ -35,7 +35,7 @@ public class RegionBehaviour : MonoBehaviour
 
                 marginHandler.SetMargin(Region,
                     Color.Lerp(Color.black, WaterColor, Region.Altitude));
-                populationBehaviour.SetPopulation(Region.PopulationDensity);
+                populationBehaviour.SetPopulation(Region.city.PopulationDensity);
                 //riverHandler.SetRiver(Region, WaterColor);
                 break;
             case RegionType.Water:
