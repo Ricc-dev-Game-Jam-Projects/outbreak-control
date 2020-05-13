@@ -2,9 +2,22 @@
 
 public class City
 {
-    public float PopulationSize { get; set; } // NUmero de cidadoes da cidade
-    public bool IsInfected { get; private set; } // Se a cidade ja esta infectada
+    public int PopulationSize;
+    public float Infected;
+    public int Money;
 
-    public Culture MyCulture { get; private set; }
+    public Culture MyCulture;
 
+    public City(int populationSize, float infected, int money, Culture myCulture)
+    {
+        PopulationSize = populationSize;
+        Infected = infected;
+        Money = money;
+        MyCulture = myCulture;
+    }
+
+    public void UpdatePerDay(Virus virus)
+    {
+        //PopulationSiz0.5f
+    }
 }
