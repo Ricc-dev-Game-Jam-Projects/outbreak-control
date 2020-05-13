@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public  class Culture
+public class Culture
 {
+
     public string Description;
     public Dictionary<ETransmission, int> TransmissionWeakness;
     public Dictionary<ESystems, int> SystemWeakness;
+    public float Warmness { get; private set; }
 
     public Culture(string description)
     {
         SystemWeakness = new Dictionary<ESystems, int>();
         TransmissionWeakness = new Dictionary<ETransmission, int>();
-        Description = description;
+        Warmness = Random.Range(0, 2);
     }
 
     public void GenerateCulture(Region region)
@@ -41,4 +43,3 @@ public  class Culture
 
     }
 }
-
