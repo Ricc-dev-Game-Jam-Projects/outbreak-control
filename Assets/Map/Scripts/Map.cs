@@ -121,8 +121,9 @@ public class Map
                 float distance = DistanceBetween(region, nearestWater);
                 float x =
                     (2 * 1 / distance + 5 * (1 - region.Altitude) - 2);
-                region.PopulationDensity =
-                    Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
+                region.city = new City(0, 0, 0, null);
+                region.city.PopulationDensity =
+            Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
             }
         });
     }
@@ -151,7 +152,7 @@ public class Map
                 currentRegion.River.pairs.Add((below.i, above.i));
 
                 previousRegion = currentRegion;
-                if(above.i != -1)
+                if (above.i != -1)
                     currentRegion = currentRegion.Neighborhood[above.i];
             } while (above.i != -1);
         }

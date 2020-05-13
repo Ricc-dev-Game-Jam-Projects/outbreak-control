@@ -6,7 +6,6 @@ using UnityEngine.Events;
 
 public class Region
 {
-    public const int MaxPopulation = 1000;
     public Map Map;
     public int X, Y;
     public float XHex, YHex;
@@ -16,10 +15,6 @@ public class Region
     public RegionType Type;
     public (bool exists, List<(int below, int above)> pairs) River;
     public int Level;
-    public float PopulationDensity {
-        get { return city.PopulationSize / MaxPopulation; }
-        set { city.PopulationSize = (int)(value * MaxPopulation); }
-    }
     private float altitude;
     public float Altitude {
         get { return altitude; }
