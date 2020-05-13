@@ -105,30 +105,26 @@ public class PerkGenerator
         SymptomsPerks[0][0] = new Symptom(name: "Immunologic I",
                                             descripton: "Affects slightly the immunologic system",
                                             perkLevel: 1,
-                                            lethalityRate: 0.2f,
-                                            system: ESystems.Immunologic,
-                                            contagionRate: 0.4f);
+                                            lethalityRate: 0.10f,
+                                            system: ESystems.Immunologic);
 
         SymptomsPerks[0][1] = new Symptom(name: "Immunologic II",
                                             descripton: "Affects the immunologic system",
                                             perkLevel: 2,
-                                            lethalityRate: 0.4f,
-                                            system: ESystems.Immunologic,
-                                            contagionRate: 0.3f);
+                                            lethalityRate: 0.20f,
+                                            system: ESystems.Immunologic);
 
         SymptomsPerks[0][2] = new Symptom(name: "Immunologic III",
                                             descripton: "Affects moderately the immunologic system",
                                             perkLevel: 3,
-                                            lethalityRate: 0.6f,
-                                            system: ESystems.Immunologic,
-                                            contagionRate: 0.2f);
+                                            lethalityRate: 0.30f,
+                                            system: ESystems.Immunologic);
 
         SymptomsPerks[0][3] = new Symptom(name: "Immunologic IV",
                                             descripton: "Affects intensely the immunologic system",
                                             perkLevel: 4,
-                                            lethalityRate: 0.7f,
-                                            system: ESystems.Immunologic,
-                                            contagionRate: 0.15f);
+                                            lethalityRate: 0.40f,
+                                            system: ESystems.Immunologic);
 
         // Respiratory
 
@@ -136,89 +132,77 @@ public class PerkGenerator
                                             descripton: "Affects slightly the respiratory system",
                                             perkLevel: 1,
                                             lethalityRate: 0.2f,
-                                            system: ESystems.Respiratory,
-                                            contagionRate: 0.3f);
+                                            system: ESystems.Respiratory);
 
         SymptomsPerks[1][1] = new Symptom(name: "Respiratory II",
                                             descripton: "Affects the respiratory system",
                                             perkLevel: 2,
                                             lethalityRate: 0.25f,
-                                            system: ESystems.Respiratory,
-                                            contagionRate: 0.45f);
+                                            system: ESystems.Respiratory);
 
         SymptomsPerks[1][2] = new Symptom(name: "Respiratory III",
                                             descripton: "Affects moderately the respiratory system",
                                             perkLevel: 3,
                                             lethalityRate: 0.35f,
-                                            system: ESystems.Respiratory,
-                                            contagionRate: 0.60f);
+                                            system: ESystems.Respiratory);
 
         SymptomsPerks[1][3] = new Symptom(name: "Respiratory IV",
                                             descripton: "Affects intensely the respiratory system",
                                             perkLevel: 4,
                                             lethalityRate: 0.45f,
-                                            system: ESystems.Respiratory,
-                                            contagionRate: 0.75f);
+                                            system: ESystems.Respiratory);
 
         // Neurologic
 
         SymptomsPerks[2][0] = new Symptom(name: "Neurologic I",
                                             descripton: "Affects slightly the neurologic system",
                                             perkLevel: 1,
-                                            lethalityRate: 0.2f,
-                                            system: ESystems.Neurologic,
-                                            contagionRate: 0.3f);
+                                            lethalityRate: 0.3f,
+                                            system: ESystems.Neurologic);
 
         SymptomsPerks[2][1] = new Symptom(name: "Neurologic II",
                                             descripton: "Affects the neurologic system",
                                             perkLevel: 2,
-                                            lethalityRate: 0.25f,
-                                            system: ESystems.Neurologic,
-                                            contagionRate: 0.45f);
+                                            lethalityRate: 0.5f,
+                                            system: ESystems.Neurologic);
 
         SymptomsPerks[2][2] = new Symptom(name: "Neurologic III",
                                             descripton: "Affects moderately the neurologic system",
                                             perkLevel: 3,
-                                            lethalityRate: 0.35f,
-                                            system: ESystems.Neurologic,
-                                            contagionRate: 0.60f);
+                                            lethalityRate: 0.6f,
+                                            system: ESystems.Neurologic);
 
         SymptomsPerks[2][3] = new Symptom(name: "Neurologic IV",
                                             descripton: "Affects intensely the neurologic system",
                                             perkLevel: 4,
-                                            lethalityRate: 0.45f,
-                                            system: ESystems.Neurologic,
-                                            contagionRate: 0.75f);
+                                            lethalityRate: 0.8f,
+                                            system: ESystems.Neurologic);
 
         // Digestive
 
         SymptomsPerks[3][0] = new Symptom(name: "Digestive I",
                                             descripton: "Affects slightly the digestive system",
                                             perkLevel: 1,
-                                            lethalityRate: 0.2f,
-                                            system: ESystems.Digestive,
-                                            contagionRate: 0.3f);
+                                            lethalityRate: 0.1f,
+                                            system: ESystems.Digestive);
 
         SymptomsPerks[3][1] = new Symptom(name: "Digestive II",
                                             descripton: "Affects the digestive system",
                                             perkLevel: 2,
-                                            lethalityRate: 0.25f,
-                                            system: ESystems.Digestive,
-                                            contagionRate: 0.45f);
+                                            lethalityRate: 0.12f,
+                                            system: ESystems.Digestive);
 
         SymptomsPerks[3][2] = new Symptom(name: "Digestive III",
                                             descripton: "Affects moderately the digestive system",
                                             perkLevel: 3,
-                                            lethalityRate: 0.35f,
-                                            system: ESystems.Digestive,
-                                            contagionRate: 0.60f);
+                                            lethalityRate: 0.15f,
+                                            system: ESystems.Digestive);
 
         SymptomsPerks[3][3] = new Symptom(name: "Digestive IV",
                                             descripton: "Affects intensely the digestive system",
                                             perkLevel: 4,
-                                            lethalityRate: 0.45f,
-                                            system: ESystems.Digestive,
-                                            contagionRate: 0.75f);
+                                            lethalityRate: 0.18f,
+                                            system: ESystems.Digestive);
 
         int cont = 0;
         foreach (Symptom[] s in SymptomsPerks)
@@ -252,28 +236,28 @@ public class PerkGenerator
                                             perkLevel: 1,
                                             infected: 1f,
                                             transmission: ETransmission.Airborne,
-                                            contagionRate: 0.45f);
+                                            contagionRate: 0.15f);
 
         TransmissionPerks[0][1] = new Transmission(name: "Airborne II",
                                             description: "The contagious can be transmitted by airborne",
                                             perkLevel: 2,
                                             infected: 1f,
                                             transmission: ETransmission.Airborne,
-                                            contagionRate: 0.45f);
+                                            contagionRate: 0.20f);
 
         TransmissionPerks[0][2] = new Transmission(name: "Airborne III",
                                             description: "The contagious can be transmitted by airborne",
                                             perkLevel: 3,
                                             infected: 1f,
                                             transmission: ETransmission.Airborne,
-                                            contagionRate: 0.60f);
+                                            contagionRate: 0.25f);
 
         TransmissionPerks[0][3] = new Transmission(name: "Airborne IV",
                                             description: "The contagious can be transmitted by airborne",
                                             perkLevel: 4,
                                             infected: 1f,
                                             transmission: ETransmission.Airborne,
-                                            contagionRate: 0.75f);
+                                            contagionRate: 0.30f);
         // Food
 
         TransmissionPerks[1][0] = new Transmission(name: "Food I",
@@ -281,28 +265,28 @@ public class PerkGenerator
                                             perkLevel: 1,
                                             infected: 1f,
                                             transmission: ETransmission.Food,
-                                            contagionRate: 0.45f);
+                                            contagionRate: 0.05f);
 
         TransmissionPerks[1][1] = new Transmission(name: "Food II",
                                             description: "The contagious can be transmitted by Food",
                                             perkLevel: 2,
                                             infected: 1f,
                                             transmission: ETransmission.Food,
-                                            contagionRate: 0.45f);
+                                            contagionRate: 0.13f);
 
         TransmissionPerks[1][2] = new Transmission(name: "Food III",
                                             description: "The contagious can be transmitted by Food",
                                             perkLevel: 3,
                                             infected: 1f,
                                             transmission: ETransmission.Food,
-                                            contagionRate: 0.60f);
+                                            contagionRate: 0.18f);
 
         TransmissionPerks[1][3] = new Transmission(name: "Food IV",
                                             description: "The contagious can be transmitted by Food",
                                             perkLevel: 4,
                                             infected: 1f,
                                             transmission: ETransmission.Food,
-                                            contagionRate: 0.75f);
+                                            contagionRate: 0.23f);
         // Water
 
         TransmissionPerks[2][0] = new Transmission(name: "Water I",
@@ -310,28 +294,28 @@ public class PerkGenerator
                                             perkLevel: 1,
                                             infected: 1f,
                                             transmission: ETransmission.Water,
-                                            contagionRate: 0.45f);
+                                            contagionRate: 0.10f);
 
         TransmissionPerks[2][1] = new Transmission(name: "Water II",
                                             description: "The contagious can be transmitted by Water",
                                             perkLevel: 2,
                                             infected: 1f,
                                             transmission: ETransmission.Water,
-                                            contagionRate: 0.45f);
+                                            contagionRate: 0.15f);
 
         TransmissionPerks[2][2] = new Transmission(name: "Water III",
                                             description: "The contagious can be transmitted by Water",
                                             perkLevel: 3,
                                             infected: 1f,
                                             transmission: ETransmission.Water,
-                                            contagionRate: 0.60f);
+                                            contagionRate: 0.20f);
 
         TransmissionPerks[2][3] = new Transmission(name: "Water IV",
                                             description: "The contagious can be transmitted by Water",
                                             perkLevel: 4,
                                             infected: 1f,
                                             transmission: ETransmission.Water,
-                                            contagionRate: 0.75f);
+                                            contagionRate: 0.25f);
         // Zoonosis
 
         TransmissionPerks[3][0] = new Transmission(name: "Zoonosis I",
@@ -339,28 +323,28 @@ public class PerkGenerator
                                             perkLevel: 1,
                                             infected: 1f,
                                             transmission: ETransmission.Zoonosis,
-                                            contagionRate: 0.45f);
+                                            contagionRate: 0.05f);
 
         TransmissionPerks[3][1] = new Transmission(name: "Zoonosis II",
                                             description: "The contagious can be transmitted by Zoonosis",
                                             perkLevel: 2,
                                             infected: 1f,
                                             transmission: ETransmission.Zoonosis,
-                                            contagionRate: 0.45f);
+                                            contagionRate: 0.8f);
 
         TransmissionPerks[3][2] = new Transmission(name: "Zoonosis III",
                                             description: "The contagious can be transmitted by Zoonosis",
                                             perkLevel: 3,
                                             infected: 1f,
                                             transmission: ETransmission.Zoonosis,
-                                            contagionRate: 0.60f);
+                                            contagionRate: 0.12f);
 
         TransmissionPerks[3][3] = new Transmission(name: "Zoonosis IV",
                                             description: "The contagious can be transmitted by Zoonosis",
                                             perkLevel: 4,
                                             infected: 1f,
                                             transmission: ETransmission.Zoonosis,
-                                            contagionRate: 0.75f);
+                                            contagionRate: 0.16f);
 
         cont = 0;
         foreach (Transmission[] t in TransmissionPerks)

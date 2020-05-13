@@ -7,9 +7,10 @@ public class Transmission : Perk
     public float InfectedRate { get; private set; } // numero de pessoas infectadas por unidade de tempo
 
     private float EvolveNum { get; set; }
+    public float ContagionRate { get; protected set; }
 
     public Transmission(string name, string description, int perkLevel, float infected, ETransmission transmission, float contagionRate) : 
-                    base(name, description, perkLevel, contagionRate)
+                    base(name, description, perkLevel)
     {
         TransmissionType = transmission;
         EvolveNum = 0.3f;

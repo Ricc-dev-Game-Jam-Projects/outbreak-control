@@ -1,17 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public  class Culture
 {
-    public string Description { get; private set; } //descricao da cultura
-    public Dictionary<ETransmission, int> DiseaseWeakness { get;private set; } // Tipos de transmissoes sucetiveis
-    public Dictionary<ETransmission, int> DiseaseStrength { get; private set; } //tipos de transmissoes menos sucetiveis
+    public string Description;
+    public Dictionary<ETransmission, int> TransmissionWeakness;
+    public Dictionary<ESystems, int> SystemWeakness;
 
     public Culture(string description)
     {
-        DiseaseStrength = new Dictionary<ETransmission, int>();
-        DiseaseWeakness = new Dictionary<ETransmission, int>();
+        SystemWeakness = new Dictionary<ESystems, int>();
+        TransmissionWeakness = new Dictionary<ETransmission, int>();
         Description = description;
+    }
+
+    public void GenerateCulture(Region region)
+    {
+        // Para respiratório olhar altura
+        float minLevel = MapBehaviour.instance.SeaLevel;
+        float regionAlt = region.Altitude;
+        float distanceFromSea = 0f;
+
+        SystemWeakness.Add(
+                    ESystems.Respiratory, 
+                    (int) Mathf.Clamp(Random.Range(0, regionAlt/4 + (distanceFromSea <= 2 ? 3 - distanceFromSea : 0)), 0, 4));
+
+        // Digestivo
+
+        // Neurologic
+
+        // Immunologic
+
+        // Airborne
+
+        // Food
+
+        // Water
+
+        // Zoonisis
+
     }
 }
 

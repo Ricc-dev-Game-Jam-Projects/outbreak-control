@@ -7,7 +7,7 @@ public class Symptom : Perk
     public float LethalityRate { get; private set; } // chance de letalidade
 
     public Symptom(string name, string descripton, int perkLevel, float lethalityRate, ESystems system, float contagionRate = 0.2f) : 
-                base(name, descripton, perkLevel, contagionRate)
+                base(name, descripton, perkLevel)
     {
         LethalityRate = lethalityRate;
         Systems = system;

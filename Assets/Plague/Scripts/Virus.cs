@@ -48,9 +48,38 @@ public class Virus
           transmissions, symptoms);
     }
 
-    public void Infect(/*Population p */)
+    public float InfectRate(Region region)
     {
+        // float de 0 a 1
+        float intensity = 0f;
+        Culture culture = region.city.MyCulture;
 
+        foreach(Transmission t in MyTransmissions)
+        {
+            if (culture.TransmissionWeakness.ContainsKey(t.TransmissionType) && 
+                culture.TransmissionWeakness[t.TransmissionType] <= t.PerkLevel)
+            {
+                intensity += t.ContagionRate;
+            }
+        }
+
+        return intensity;
+    }
+
+    public float Lethality(Region region)
+    {
+        float intensity = 0f;
+        Culture culture = region.city.MyCulture;
+
+        foreach (Symptom s in MySymptoms)
+        {
+            if (culture.SystemWeakness.ContainsKey(s.Systems) && culture.SystemWeakness[s.Systems] <= s.PerkLevel)
+            {
+                intensity += s.LethalityRate;
+            }
+        }
+
+        return intensity;
     }
 
     public void UpdateSpreadingSpeed(float rating)
