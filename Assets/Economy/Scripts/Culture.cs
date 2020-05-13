@@ -7,7 +7,9 @@ public class Culture
     public string Description;
     public Dictionary<ETransmission, int> TransmissionWeakness;
     public Dictionary<ESystems, int> SystemWeakness;
-    public float Warmness { get; private set; }
+    public float Warmness;
+    public float StrangAnimalEating;
+    public float SexualRelation;
 
     public Culture(string description)
     {
@@ -18,6 +20,7 @@ public class Culture
 
     public void GenerateCulture(Region region)
     {
+        int pointsToUse = 24;
         // Para respiratório olhar altura
         float minLevel = MapBehaviour.instance.SeaLevel;
         float regionAlt = region.Altitude;
@@ -25,9 +28,14 @@ public class Culture
 
         SystemWeakness.Add(
                     ESystems.Respiratory, 
-                    (int) Mathf.Clamp(Random.Range(0, regionAlt/4 + (distanceFromSea <= 2 ? 3 - distanceFromSea : 0)), 0, 4));
+                    (int) Mathf.Clamp(Random.Range(0, regionAlt/4 + (distanceFromSea > 2 ? distanceFromSea/2 : 0)), 0, 4));
+
+        pointsToUse -= SystemWeakness[ESystems.Respiratory];
 
         // Digestivo
+        SystemWeakness.Add(
+                    ESystems.Digestive,
+                    2);
 
         // Neurologic
 

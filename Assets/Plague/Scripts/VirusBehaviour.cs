@@ -8,11 +8,11 @@ public class VirusBehaviour : MonoBehaviour
     public VirusUI _VirusUI;
 
     private PerkGenerator perkGenerator;
-    float Spreading 
+    //float Spreading 
 
     void Start()
     {
-        virus = new Virus("Hepy", 0.5f,0.3f);
+        virus = new Virus("Hepy", 0.5f);
         perkGenerator = new PerkGenerator();
         perkGenerator.GeneratePerks(out Symptom[] symptoms, out Transmission[] transmissions);
         Virus.CalculateSpreading(virus);

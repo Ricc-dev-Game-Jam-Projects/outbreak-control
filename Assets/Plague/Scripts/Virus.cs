@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Virus
 {
     public string Name { get; private set; }
-    public float Spreading { get; private set; }
+    public float Spreading; // Média de de pessoas contagiadas por 1 pessoa infectada (esse valor pode abaixar com as medidas)
+    public float SerialRange; // A cada quantos dias são manifestados os sintomas, contabilizando mais infectados
+    public float FatalityCase; // Qual a média de fatalidade entre os infectados
 
     public List<Symptom> MySymptoms { get; private set; } // Sintomas do virus
     public List<Transmission> MyTransmissions { get; private set; } //meios de Transmissao do virus
@@ -13,7 +16,7 @@ public class Virus
 
     public int PerkNumber = 2;
 
-    public Virus(string name, float spr, float death)
+    public Virus(string name, float spr)
     {
         Name = name;
         Spreading = spr;
@@ -24,8 +27,14 @@ public class Virus
             { "Symptoms", MySymptoms.ToArray() as Perk[] },
             { "Transmission", MyTransmissions.ToArray() as Perk[] }
         };
-        Spreading = 0.2f; //Spreading basico do virus
+        
+        Spreading = Random.Range(1.4f, 4.0f);
+        SerialRange = Random.Range(1f, 5f);
+        FatalityCase = Random.Range(0.0005f, 0.04f);
 
+        Debug.Log("Virus Spreading " + Spreading);
+        Debug.Log("Virus Serial Range " + SerialRange);
+        Debug.Log("Virus Fatality Cases " + FatalityCase);        
     }
 
     public override string ToString()
@@ -66,7 +75,7 @@ public class Virus
             }
         }
 
-        return intensity;
+        return Spreading + (intensity * Spreading);
     }
 
     public float Lethality(Region region)
@@ -78,11 +87,11 @@ public class Virus
         {
             if (culture.SystemWeakness.ContainsKey(s.Systems) && culture.SystemWeakness[s.Systems] <= s.PerkLevel)
             {
-                intensity += s.LethalityRate;
+                intensity += s.LethalityRate/100f;
             }
         }
 
-        return intensity; 
+        return FatalityCase + (intensity * FatalityCase); 
     }
 
     public static float CalculateSpreading(Virus v)

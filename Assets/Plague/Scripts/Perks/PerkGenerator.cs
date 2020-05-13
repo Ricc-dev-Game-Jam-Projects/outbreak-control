@@ -50,14 +50,14 @@ public class PerkGenerator
                     {
                         symptoms[subtype] = SymptomsPerks[subtype][0].Clone();
                         UsedPoints++;
-                        Debug.Log("Added " + symptoms[subtype].Name + " Points used: " + UsedPoints);
+                        //Debug.Log("Added " + symptoms[subtype].Name + " Points used: " + UsedPoints);
                     } else
                     {
                         if(symptoms[subtype].PerkLevel < SymptomsMaxLevel)
                         {
                             symptoms[subtype].EvolvePerk(SymptomsPerks[subtype][symptoms[subtype].PerkLevel]);
                             UsedPoints++;
-                            Debug.Log("Added " + symptoms[subtype].Name + " Points used: " + UsedPoints);
+                            //Debug.Log("Added " + symptoms[subtype].Name + " Points used: " + UsedPoints);
                         }
                     }
                     break;
@@ -67,7 +67,7 @@ public class PerkGenerator
                     {
                         transmissions[subtype] = TransmissionPerks[subtype][0].Clone();
                         UsedPoints++;
-                        Debug.Log("Added " + transmissions[subtype].Name + " Points used: " + UsedPoints);
+                        //Debug.Log("Added " + transmissions[subtype].Name + " Points used: " + UsedPoints);
                     }
                     else
                     {
@@ -75,7 +75,7 @@ public class PerkGenerator
                         {
                             transmissions[subtype].EvolvePerk(TransmissionPerks[subtype][transmissions[subtype].PerkLevel]);
                             UsedPoints++;
-                            Debug.Log("Added " + transmissions[subtype].Name + " Points used: " + UsedPoints);
+                            //Debug.Log("Added " + transmissions[subtype].Name + " Points used: " + UsedPoints);
                         }
                     }
                     break;

@@ -21,13 +21,15 @@ public class MapBehaviour : MonoBehaviour
     private float pixelsPerUnit;
     private Map map;
 
+    public Map _map { get { return map; } }
+
     private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
     }
 
-    void Start()
+    private void Start()
     {
         Sprite sprite = RegionPrefab.GetComponent<SpriteRenderer>().sprite;
         pixelsPerUnit = sprite.rect.width / sprite.bounds.size.x;

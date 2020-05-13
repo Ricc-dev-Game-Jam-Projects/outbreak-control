@@ -2343,6 +2343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3b39fa12af53b40a3d1b2d349e84cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  virusBehaviour: {fileID: 345264159}
+  mapBehaviour: {fileID: 1275556258}
   timeManager: {fileID: 457406009}
 --- !u!4 &1250025438
 Transform:
@@ -2356,7 +2358,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1275422077 stripped
 GameObject:
@@ -2379,6 +2381,58 @@ MonoBehaviour:
   MenuTab: {fileID: 320206585}
   MenuKey: 27
   Closed: 1
+--- !u!1 &1275556257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1275556259}
+  - component: {fileID: 1275556258}
+  m_Layer: 0
+  m_Name: Map
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1275556258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275556257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 250f275011bbc3a4e8282e82ed0ad2c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RegionPrefab: {fileID: 9164362076272197100, guid: fa6aaf0e95bd04b4fb69ada3998184f6,
+    type: 3}
+  WGrid: 41
+  HGrid: 27
+  XOffset: 0
+  YOffset: 0
+  Scale: 0.18
+  SeaLevel: 0.4
+  RiverOccurrence: 0.25
+--- !u!4 &1275556259
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275556257}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.9, y: -5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1365317338 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 480931510646964394, guid: 63bf27643242e4f469293e14b8e57d23,
@@ -3581,7 +3635,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1919538652
 GameObject:

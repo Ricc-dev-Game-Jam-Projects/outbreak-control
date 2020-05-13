@@ -121,7 +121,9 @@ public class Map
                 float distance = DistanceBetween(region, nearestWater);
                 float x =
                     (2 * 1 / distance + 5 * (1 - region.Altitude) - 2);
-                region.city = new City(0, 0, 0, null);
+                Culture culture = new Culture("Essa é uma cultura");
+                culture.GenerateCulture(region);
+                region.city = new City(0, 0, 0, culture);
                 region.city.PopulationDensity =
             Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
             }
