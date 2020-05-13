@@ -127,6 +127,7 @@ public class Map
         });
     }
 
+
     public void DefineRivers(float occurrence)
     {
         foreach (Region coast in RegionCollections[RegionType.Coast])
@@ -154,6 +155,22 @@ public class Map
                     currentRegion = currentRegion.Neighborhood[above.i];
             } while (above.i != -1);
         }
+    }
+
+    public float DistanceFromWater(Region region)
+    {
+        Region nearestWater = region;
+        BFS(region, (_region) =>
+        {
+            if (_region.Type == RegionType.Water)
+            {
+                nearestWater = _region;
+                return true;
+            }
+            return false;
+        });
+
+        return DistanceBetween(region, nearestWater);
     }
 
     public void Sweep(Action<Region> action)

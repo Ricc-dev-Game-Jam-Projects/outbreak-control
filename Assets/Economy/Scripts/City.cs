@@ -18,6 +18,12 @@ public class City
 
     public void UpdatePerDay(Virus virus)
     {
-        //PopulationSiz0.5f
+        PopulationSize *= (int)(1 - Infected * 0.5f);
+        Infected *= 1 + 0.2f;
+    }
+
+    public static void MigrationPerDay(City city1, City city2)
+    {
+        
     }
 }
