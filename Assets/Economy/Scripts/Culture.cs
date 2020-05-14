@@ -15,7 +15,9 @@ public class Culture
     {
         SystemWeakness = new Dictionary<ESystems, int>();
         TransmissionWeakness = new Dictionary<ETransmission, int>();
-        Warmness = Random.Range(0, 2);
+        Warmness = Random.Range(0, 2); //Randomizando a calorosidade da cultura
+        StrangAnimalEating = Random.Range(0, 2); //Randomizando a quantidade de Animais Estranhos consumidos
+        SexualRelation = Random.Range(0f, 2f); //quantidade de vezes que a cultura tem relacoes sexuais
     }
 
     public void GenerateCulture(Region region)
@@ -25,29 +27,51 @@ public class Culture
         float minLevel = MapBehaviour.instance.SeaLevel;
         float regionAlt = region.Altitude;
         float distanceFromSea = 0f;
-
         SystemWeakness.Add(
                     ESystems.Respiratory, 
                     (int) Mathf.Clamp(Random.Range(0, regionAlt/4 + (distanceFromSea > 2 ? distanceFromSea/2 : 0)), 0, 4));
 
-        pointsToUse -= SystemWeakness[ESystems.Respiratory];
+        pointsToUse -= SystemWeakness[ESystems.Respiratory]; // 4
 
         // Digestivo
+        //Vou repetir um monte de Random aqui Riccardo, apaga nao por favor :)
         SystemWeakness.Add(
-                    ESystems.Digestive,
-                    2);
+                    ESystems.Immunologic, (int) Mathf.Clamp(SexualRelation,0, 2));
+        pointsToUse -= SystemWeakness[ESystems.Respiratory]; //8
 
         // Neurologic
+        SystemWeakness.Add(
+           ESystems.Immunologic, Random.Range(0, 4));
+        pointsToUse -= SystemWeakness[ESystems.Respiratory]; //12
 
-        // Immunologic
-
+        SystemWeakness.Add(
+               ESystems.Immunologic, Random.Range(0, 4));
         // Airborne
+        pointsToUse -= SystemWeakness[ESystems.Respiratory]; //16
+        SystemWeakness.Add(
+               ESystems.Immunologic, Random.Range(0, 4));
+        pointsToUse -= SystemWeakness[ESystems.Respiratory];
 
         // Food
-
+        SystemWeakness.Add(
+             ESystems.Digestive, Random.Range((int) StrangAnimalEating, 4));
+        if(pointsToUse > 0 )
+        {
+            pointsToUse -= SystemWeakness[ESystems.Respiratory];
+        }
         // Water
-
-        // Zoonisis
-
+        SystemWeakness.Add(
+             ESystems.Digestive, Random.Range(0, 4));
+        if (pointsToUse > 0)
+        {
+            pointsToUse -= SystemWeakness[ESystems.Respiratory];
+        }
+        // Zoonosis
+        SystemWeakness.Add(
+             ESystems.Immunologic, Random.Range(0, 4));
+        if (pointsToUse > 0)
+        {
+            pointsToUse -= SystemWeakness[ESystems.Respiratory];
+        }
     }
 }
