@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class RegionBehaviour : MonoBehaviour
 {
+    public static RegionBehaviour RegionSelected;
+
     public Color GroundColor;
     public Color WaterColor;
     public GameObject Select;
@@ -60,6 +62,11 @@ public class RegionBehaviour : MonoBehaviour
     }
 
     void Update() { }
+
+    public void OnMouseUp()
+    {
+        RegionSelected = this;
+    }
 
     private void OnMouseEnter()
     {
