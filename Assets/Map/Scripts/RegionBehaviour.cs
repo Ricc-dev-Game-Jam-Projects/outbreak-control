@@ -36,7 +36,6 @@ public class RegionBehaviour : MonoBehaviour
                 marginHandler.SetMargin(Region,
                     Color.Lerp(Color.black, WaterColor, Region.Altitude));
                 populationBehaviour.SetPopulation(Region.city.PopulationDensity);
-                //riverHandler.SetRiver(Region, WaterColor);
                 break;
             case RegionType.Water:
                 spriteRenderer.color =
@@ -53,14 +52,16 @@ public class RegionBehaviour : MonoBehaviour
         }
     }
 
+    public void UpdateRegion()
+    {
+        populationBehaviour.SetPopulation(Region.city.PopulationDensity);
+    }
+
     public void ShowPopulation(bool show)
     {
         if (Region.Type != RegionType.Water)
             populationBehaviour.gameObject.SetActive(show);
     }
-
-    void Update() { }
-
     private void OnMouseEnter()
     {
         Select.SetActive(true);

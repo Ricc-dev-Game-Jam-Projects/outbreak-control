@@ -68,6 +68,7 @@ public class Virus
 
         foreach(Transmission t in MyTransmissions)
         {
+            if (t == null) continue;
             if (culture.TransmissionWeakness.ContainsKey(t.TransmissionType) && 
                 culture.TransmissionWeakness[t.TransmissionType] <= t.PerkLevel)
             {
@@ -85,13 +86,14 @@ public class Virus
 
         foreach (Symptom s in MySymptoms)
         {
+            if (s == null) continue;
             if (culture.SystemWeakness.ContainsKey(s.Systems) && culture.SystemWeakness[s.Systems] <= s.PerkLevel)
             {
                 intensity += s.LethalityRate/100f;
             }
         }
 
-        return FatalityCase + (intensity * FatalityCase); 
+        return FatalityCase + (intensity * FatalityCase);
     }
 
     public int SerialRangeRnd()
