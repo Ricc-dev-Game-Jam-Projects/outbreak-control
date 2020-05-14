@@ -26,10 +26,10 @@ public class MapUI : MonoBehaviour
         if(RegionBehaviour.RegionSelected != null)
         {
             Region reg = RegionBehaviour.RegionSelected.Region;
-            if(reg.Type != RegionType.Water && reg.city != null)
+            if(reg != null && reg.Type != RegionType.Water)
             {
-                PopulationSizeText.text = reg.city.PopulationSize + "";
-                InfectedText.text = reg.city.Infected + "";
+                PopulationSizeText.text = reg.city.AbsPopulation + "";
+                InfectedText.text = reg.city.RelInfected + "";
             } 
         }
     }
