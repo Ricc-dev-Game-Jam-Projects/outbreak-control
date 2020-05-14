@@ -123,13 +123,29 @@ public class Map
                     (2 * 1 / distance + 5 * (1 - region.Altitude) - 2);
                 Culture culture = new Culture("Essa é uma cultura");
                 culture.GenerateCulture(region);
-                region.city = new City(0, 0, 0, culture);
+                region.city = new City(region, culture);
                 region.city.PopulationDensity =
-            Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
+                    Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
             }
         });
     }
 
+    public void UpdatePerDay(Virus virus)
+    {
+        Sweep((region) =>
+        {
+            if (region.Type != RegionType.Water)
+            {
+                region.city.UpdatePerDay(virus);
+                foreach (Region neighbor in region.Neighborhood)
+                {
+                    if (neighbor != null &&
+                        neighbor.Type != RegionType.Water)
+                        City.MigrationPerDay(region.city, neighbor.city);
+                }
+            }
+        });
+    }
 
     public void DefineRivers(float occurrence)
     {

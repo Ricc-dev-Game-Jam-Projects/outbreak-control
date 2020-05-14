@@ -56,7 +56,13 @@ public class MapBehaviour : MonoBehaviour
         map.DefineRivers(RiverOccurrence);
     }
 
-    void Update() { }
+    public void UpdateRegions()
+    {
+        foreach (Transform t in gameObject.transform)
+        {
+            t.GetComponent<RegionBehaviour>().UpdateRegion();
+        }
+    }
 
     public void ShowPopulation(bool show)
     {
