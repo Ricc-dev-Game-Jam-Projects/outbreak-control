@@ -6,9 +6,11 @@ using TMPro;
 
 public class MapUI : MonoBehaviour
 {
+    public RegionPopUp PopUp;
+
     public Button PopulationButton;
-    public TextMeshProUGUI PopulationSizeText;
-    public TextMeshProUGUI InfectedText;
+    public TextMeshPro PopulationSizeText;
+    public TextMeshPro InfectedText;
 
     private bool showPopulation;
 
@@ -30,7 +32,11 @@ public class MapUI : MonoBehaviour
             {
                 PopulationSizeText.text = reg.city.PopulationSize + "";
                 InfectedText.text = reg.city.Infected + "";
-            } 
+                PopUp.OpenOn(RegionBehaviour.RegionSelected.transform.position.x, RegionBehaviour.RegionSelected.transform.position.y);
+            } else
+            {
+                PopUp.Close();
+            }
         }
     }
 }

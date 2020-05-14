@@ -72,7 +72,7 @@ public class Timer : MonoBehaviour
     public int SecondPerReal = 16;
     public static readonly int MinuteSize = 60;
     public static readonly int HourSize = 60;
-    public static readonly int DaySize = 24;
+    public static readonly int DaySize = 3;
 
     public bool Running;
 
@@ -108,15 +108,22 @@ public class Timer : MonoBehaviour
     IEnumerator Ticking()
     {
         Running = false;
-        yield return new WaitForSecondsRealtime(.5f);
+        yield return new WaitForSecondsRealtime(1f);
         CalculateTime();
         Running = true;
     }
 
     public void CalculateTime()
     {
-        Day++;
-        OnDayPassed();
+        Hour++;
+        OnHourPassed();
+
+        if (Hour >= DaySize)
+        {
+            Day++;
+            Hour = 0;
+            OnDayPassed();
+        }
         /*Second++;
 
         if (Second >= MinuteSize)
@@ -133,12 +140,6 @@ public class Timer : MonoBehaviour
             OnHourPassed();
         }
 
-        if (Hour >= DaySize)
-        {
-            Day++;
-            Hour = 0;
-            OnDayPassed();
-        }
 
         if (Day > DayPerMonth)
         {

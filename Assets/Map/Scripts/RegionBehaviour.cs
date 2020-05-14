@@ -66,8 +66,13 @@ public class RegionBehaviour : MonoBehaviour
             populationBehaviour.gameObject.SetActive(show);
     }
 
-    public void OnMouseUp()
+    public void OnLMBUp()
     {
+        if(RegionSelected == this)
+        {
+            RegionSelected = null;
+            return;
+        }
         RegionSelected = this;
     }
 
