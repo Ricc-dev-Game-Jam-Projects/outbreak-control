@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections;
+using System.Threading;
 using UnityEngine;
 
 public class TimerEventArgs
@@ -11,7 +12,7 @@ public class TimerEventArgs
     }
 }
 
-public class Timer
+public class Timer : MonoBehaviour
 {
     public LifeTime lifeTime;
 
@@ -84,25 +85,10 @@ public class Timer
 
     private Thread timer; 
 
-    public Timer(int day, int month, int year, int hour, int minute, float second)
-    {
-        lifeTime = new LifeTime(day, month, year, hour, minute, (int)second);
-        timer = new Thread(Tick);
-    }
-
-    public Timer()
+    private void Start()
     {
         lifeTime = new LifeTime(1, 1, 1, 0, 0, 0);
-
-        timer = new Thread(Tick);
-
-        Debug.Log("<color=purple>Bom dia! Data de hoje >>> " + ToString() + "</color>");
-    }
-
-    public void Start()
-    {
         Running = true;
-        timer.Start();
     }
 
     public override string ToString()
@@ -110,14 +96,21 @@ public class Timer
         return lifeTime.ToString();
     }
 
-    public void Tick()
+    public void Update()
     {
-        while (Running)
+        if (Running)
         {
             //Thread.Sleep(1000 / (SecondPerReal * Speed));
-            Thread.Sleep(5000);
-            CalculateTime();
+            StartCoroutine("Ticking");
         }
+    }
+
+    IEnumerator Ticking()
+    {
+        Running = false;
+        yield return new WaitForSecondsRealtime(5f);
+        CalculateTime();
+        Running = true;
     }
 
     public void CalculateTime()

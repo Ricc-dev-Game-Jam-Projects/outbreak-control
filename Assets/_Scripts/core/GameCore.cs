@@ -31,11 +31,10 @@ public class GameCore : MonoBehaviour
         }
         #endregion
 
-        timer = new Timer();
+        GameObject go = new GameObject();
+        timer = go.AddComponent<Timer>();
 
         timeManager.timer = timer;
-        timer.SecondPerReal = 1240;
-        timer.Start();
     }
 
     private void Start()

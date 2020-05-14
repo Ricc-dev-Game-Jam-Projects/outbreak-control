@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class RegionBehaviour : MonoBehaviour
 {
+    public static RegionBehaviour RegionSelected;
+
     public Color GroundColor;
     public Color WaterColor;
     public GameObject Select;
@@ -54,7 +56,8 @@ public class RegionBehaviour : MonoBehaviour
 
     public void UpdateRegion()
     {
-        populationBehaviour.SetPopulation(Region.city.PopulationDensity);
+        if(populationBehaviour != null)
+            populationBehaviour.SetPopulation(Region.city.PopulationDensity);
     }
 
     public void ShowPopulation(bool show)
@@ -62,6 +65,12 @@ public class RegionBehaviour : MonoBehaviour
         if (Region.Type != RegionType.Water)
             populationBehaviour.gameObject.SetActive(show);
     }
+
+    public void OnMouseUp()
+    {
+        RegionSelected = this;
+    }
+
     private void OnMouseEnter()
     {
         Select.SetActive(true);
