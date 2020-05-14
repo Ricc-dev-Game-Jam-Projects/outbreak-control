@@ -108,7 +108,7 @@ public class Timer : MonoBehaviour
     IEnumerator Ticking()
     {
         Running = false;
-        yield return new WaitForSecondsRealtime(5f);
+        yield return new WaitForSecondsRealtime(.5f);
         CalculateTime();
         Running = true;
     }
