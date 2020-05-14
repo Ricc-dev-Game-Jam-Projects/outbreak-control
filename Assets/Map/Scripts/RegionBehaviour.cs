@@ -56,7 +56,8 @@ public class RegionBehaviour : MonoBehaviour
 
     public void UpdateRegion()
     {
-        populationBehaviour.SetPopulation(Region.city.PopulationDensity);
+        if(populationBehaviour != null)
+            populationBehaviour.SetPopulation(Region.city.PopulationDensity);
     }
 
     public void ShowPopulation(bool show)
