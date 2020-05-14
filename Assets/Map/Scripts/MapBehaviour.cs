@@ -54,6 +54,7 @@ public class MapBehaviour : MonoBehaviour
         map.GenerateNewMap(Scale, SeaLevel);
         map.DistributePopulation(Scale);
         map.DefineRivers(RiverOccurrence);
+        map.StartInfection();
     }
 
     public void UpdateRegions()

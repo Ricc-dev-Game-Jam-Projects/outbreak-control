@@ -5,17 +5,29 @@ using UnityEngine;
 public class City
 {
     public const int MaxPopulation = 1000;
-    public float PopulationDensity {
-        get { return (float)PopulationSize / MaxPopulation; }
-        set { PopulationSize = (int)(value * MaxPopulation); }
+    public float RelPopulation {
+        get { return (float)AbsPopulation / MaxPopulation; }
+        set { AbsPopulation = (int)(value * MaxPopulation); }
     }
-    public int PopulationSize;
-    public float Symptomatic;
-    public Queue<float> Asymptomatic;
-    public float Infected {
+    public int AbsPopulation;
+    public float RelSymptomatic {
+        get { return (float)AbsSymptomatic / AbsPopulation; }
+        set { AbsSymptomatic = (int)(value * AbsPopulation); }
+    }
+    public int AbsSymptomatic;
+    public Queue<int> Asymptomatic;
+    public float RelInfected {
         get {
-            float infected = Symptomatic;
-            foreach (float a in Asymptomatic)
+            float infected = RelSymptomatic;
+            foreach (int a in Asymptomatic)
+                infected += (float)a / AbsPopulation;
+            return infected;
+        }
+    }
+    public int AbsInfected {
+        get {
+            int infected = AbsSymptomatic;
+            foreach (int a in Asymptomatic)
                 infected += a;
             return infected;
         }
@@ -27,40 +39,42 @@ public class City
 
     public City(Region region, Culture myCulture)
     {
-        PopulationSize = 0;
-        Symptomatic = 0;
+        AbsPopulation = 0;
+        RelSymptomatic = 0;
         Money = 0;
         MyCulture = myCulture;
         Region = region;
-        Asymptomatic = new Queue<float>();
+        Asymptomatic = new Queue<int>();
     }
 
     public void UpdatePerDay(Virus virus)
     {
-        int deaths = (int)(PopulationSize * Symptomatic * virus.Lethality(Region));
-        //PopulationSize = (int)Math.Pow(PopulationSize - deaths, 1.001);
-        Asymptomatic.Enqueue(virus.InfectRate(Region) * Infected);
+        float deaths = RelPopulation * RelSymptomatic * virus.Lethality(Region);
+        RelPopulation -= deaths;
+        Asymptomatic.Enqueue((int)virus.InfectRate(Region) * AbsInfected);
         if (Asymptomatic.Count > virus.SerialRangeRnd())
-            Symptomatic += Asymptomatic.Dequeue();
+            RelSymptomatic += Asymptomatic.Dequeue();
     }
 
-    public static void MigrationPerDay(City from, City to)
+    public void UpdatePerWeek()
     {
-        float deltaPopulationDensity = from.PopulationDensity /
-            (from.PopulationDensity + to.PopulationDensity + 0.00001f);
-        float deltaInfected = from.Symptomatic /
-            (from.Symptomatic + to.Symptomatic + 0.00001f);
+        RelPopulation *= 1.005f;
+    }
+
+    public static int MigrationPerDay(City from, City to)
+    {
+        float deltaPopulationDensity = from.RelPopulation /
+            (from.RelPopulation + to.RelPopulation + 0.00001f);
+        float deltaInfected = from.RelSymptomatic /
+            (from.RelSymptomatic + to.RelSymptomatic + 0.00001f);
         float deltaMoney = to.Money / (from.Money + to.Money + 0.00001f);
         float migration =
             deltaMoney * 0.5f +
             deltaInfected * 0.3f +
             deltaPopulationDensity * 0.2f;
 
-        if(migration > 0f)
-        {
-            int totalMigration = (int)(migration * from.PopulationSize * 0.5);
-            from.PopulationSize -= totalMigration;
-            to.PopulationSize += totalMigration;
-        }
+        if (migration > 0f)
+            return (int)(migration * from.AbsPopulation * 0.5);
+        return 0;
     }
 }
