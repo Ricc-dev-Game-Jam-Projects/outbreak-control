@@ -15,6 +15,9 @@ public class Region
     public RegionType Type;
     public (bool exists, List<(int below, int above)> pairs) River;
     public int Level;
+
+    public Action RegionInfected;
+
     private float altitude;
     public float Altitude {
         get { return altitude; }
@@ -61,5 +64,11 @@ public class Region
                 pair = (neighbor, i);
         });
         return pair;
+    }
+
+    public void OnRegionInfected()
+    {
+        Debug.Log("Region infected x: " + X + " y: " + Y);
+        RegionInfected?.Invoke();
     }
 }

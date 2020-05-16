@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MapUI : MonoBehaviour
 {
+    public RegionPopUp PopUp;
+
     public Button PopulationButton;
+    public TextMeshPro PopulationSizeText;
+    public TextMeshPro InfectedText;
 
     private bool showPopulation;
 
@@ -18,9 +23,20 @@ public class MapUI : MonoBehaviour
         });
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
+        if(RegionBehaviour.RegionSelected != null)
+        {
+            Region reg = RegionBehaviour.RegionSelected.Region;
+            if(reg != null && reg.Type != RegionType.Water)
+            {
+                PopulationSizeText.text = reg.city.AbsPopulation + "";
+                InfectedText.text = reg.city.RelInfected + "";
+                PopUp.OpenOn(RegionBehaviour.RegionSelected.transform.position.x, RegionBehaviour.RegionSelected.transform.position.y);
+            } else
+            {
+                PopUp.Close();
+            }
+        }
     }
 }

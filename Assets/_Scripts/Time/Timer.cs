@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections;
+using System.Threading;
 using UnityEngine;
 
 public class TimerEventArgs
@@ -11,7 +12,7 @@ public class TimerEventArgs
     }
 }
 
-public class Timer
+public class Timer : MonoBehaviour
 {
     public LifeTime lifeTime;
 
@@ -71,7 +72,7 @@ public class Timer
     public int SecondPerReal = 16;
     public static readonly int MinuteSize = 60;
     public static readonly int HourSize = 60;
-    public static readonly int DaySize = 24;
+    public static readonly int DaySize = 3;
 
     public bool Running;
 
@@ -84,25 +85,10 @@ public class Timer
 
     private Thread timer; 
 
-    public Timer(int day, int month, int year, int hour, int minute, float second)
-    {
-        lifeTime = new LifeTime(day, month, year, hour, minute, (int)second);
-        timer = new Thread(Tick);
-    }
-
-    public Timer()
+    private void Start()
     {
         lifeTime = new LifeTime(1, 1, 1, 0, 0, 0);
-
-        timer = new Thread(Tick);
-
-        Debug.Log("<color=purple>Bom dia! Data de hoje >>> " + ToString() + "</color>");
-    }
-
-    public void Start()
-    {
         Running = true;
-        timer.Start();
     }
 
     public override string ToString()
@@ -110,20 +96,34 @@ public class Timer
         return lifeTime.ToString();
     }
 
-    public void Tick()
+    public void Update()
     {
-        while (Running)
+        if (Running)
         {
             //Thread.Sleep(1000 / (SecondPerReal * Speed));
-            Thread.Sleep(5000);
-            CalculateTime();
+            StartCoroutine("Ticking");
         }
+    }
+
+    IEnumerator Ticking()
+    {
+        Running = false;
+        yield return new WaitForSecondsRealtime(1f);
+        CalculateTime();
+        Running = true;
     }
 
     public void CalculateTime()
     {
-        Day++;
-        OnDayPassed();
+        Hour++;
+        OnHourPassed();
+
+        if (Hour >= DaySize)
+        {
+            Day++;
+            Hour = 0;
+            OnDayPassed();
+        }
         /*Second++;
 
         if (Second >= MinuteSize)
@@ -140,12 +140,6 @@ public class Timer
             OnHourPassed();
         }
 
-        if (Hour >= DaySize)
-        {
-            Day++;
-            Hour = 0;
-            OnDayPassed();
-        }
 
         if (Day > DayPerMonth)
         {

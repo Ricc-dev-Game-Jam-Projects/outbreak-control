@@ -49,14 +49,30 @@ public class MapBehaviour : MonoBehaviour
             regionGameObject.transform.Translate(
                 regionSpriteWidth * region.XHex / pixelsPerUnit,
                 regionSpriteHeight * region.YHex / pixelsPerUnit, 0);
+
+            regionGameObject.name = region.XHex + " " + region.YHex;
         });
 
         map.GenerateNewMap(Scale, SeaLevel);
         map.DistributePopulation(Scale);
         map.DefineRivers(RiverOccurrence);
+        //map.StartInfection();
+        StartCoroutine("CoolDownToInfect");
     }
 
-    void Update() { }
+    IEnumerator CoolDownToInfect()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+        map.StartInfection();
+    }
+
+    public void UpdateRegions()
+    {
+        foreach (Transform t in gameObject.transform)
+        {
+            t.GetComponent<RegionBehaviour>().UpdateRegion();
+        }
+    }
 
     public void ShowPopulation(bool show)
     {

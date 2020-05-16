@@ -123,13 +123,50 @@ public class Map
                     (2 * 1 / distance + 5 * (1 - region.Altitude) - 2);
                 Culture culture = new Culture("Essa é uma cultura");
                 culture.GenerateCulture(region);
-                region.city = new City(0, 0, 0, culture);
-                region.city.PopulationDensity =
-            Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
+                region.city = new City(region, culture);
+                region.city.RelPopulation =
+                    Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
             }
         });
     }
 
+    public void UpdatePerDay(Virus virus)
+    {
+        int[,,] migrations = new int[Width, Height, 6];
+        Sweep((region) =>
+        {
+            if (region.Type != RegionType.Water)
+            {
+                region.city.UpdatePerDay(virus);
+                region.ForeachNeighbor((neighbor, i) =>
+                {
+                    if (neighbor != null &&
+                        neighbor.Type != RegionType.Water &&
+                        neighbor.city.RelPopulation < 1)
+                        migrations[region.X, region.Y, i] =
+                            City.MigrationPerDay(region.city, neighbor.city);
+                });
+
+            }
+        });
+        Sweep((region) =>
+        {
+            if (region.Type != RegionType.Water)
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    if (region.Neighborhood[i] != null &&
+                        region.Neighborhood[i].Type != RegionType.Water)
+                    {
+                        region.city.AbsPopulation -=
+                            migrations[region.X, region.Y, i];
+                        region.Neighborhood[i].city.
+                            AbsPopulation += migrations[region.X, region.Y, i];
+                    }
+                }
+            }
+        });
+    }
 
     public void DefineRivers(float occurrence)
     {
@@ -158,6 +195,21 @@ public class Map
                     currentRegion = currentRegion.Neighborhood[above.i];
             } while (above.i != -1);
         }
+    }
+
+    public void StartInfection()
+    {
+        int x;
+        int y;
+
+        do
+        {
+            x = UnityEngine.Random.Range(0, Width);
+            y = UnityEngine.Random.Range(0, Height);
+        } while (Grid[x, y].Type == RegionType.Water && Grid[x, y].city == null);
+        //
+        Debug.Log("Region infected x 'n y : " + x + ", " + y);
+        Grid[x, y].city.Asymptomatic.Enqueue(1);
     }
 
     public float DistanceFromWater(Region region)
