@@ -69,6 +69,12 @@ public class RegionBehaviour : MonoBehaviour
         }
     }
 
+    public void SubscribeOnInfected(Action subscriber)
+    {
+        if(Region != null && Region.Type != RegionType.Water)
+            Region.RegionInfected += subscriber;
+    }
+
     public static void SubscribeOnClickLMB(RegionHandler subscriber)
     {
         foreach (RegionBehaviour regionB in Regions)

@@ -17,6 +17,7 @@ public class VirusPopper : MonoBehaviour
         gameObject.transform.localPosition = Vector3.zero;
         gameObject.transform.localScale = Vector3.one;
         animator.Play("PlagueCase");
+        Debug.Log("Popped on x: " + region.Region.X + "  y: " + region.Region.Y);
     }
 
     public bool Able()

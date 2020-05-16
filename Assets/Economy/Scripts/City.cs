@@ -53,7 +53,14 @@ public class City
         RelPopulation -= deaths;
         Asymptomatic.Enqueue((int)virus.InfectRate(Region) * AbsInfected);
         if (Asymptomatic.Count > virus.SerialRangeRnd())
-            RelSymptomatic += Asymptomatic.Dequeue();
+        {
+            int value = Asymptomatic.Dequeue();
+            if (RelSymptomatic == 0f && value > 0)
+            {
+                Region.OnRegionInfected();
+            }
+            RelSymptomatic += value;
+        }
     }
 
     public void UpdatePerWeek()

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class VirusBehaviour : MonoBehaviour
 {
+    public static VirusBehaviour instance;
+
     public TextMeshProUGUI text;
     public Virus virus;
     public VirusUI _VirusUI;
@@ -14,6 +16,17 @@ public class VirusBehaviour : MonoBehaviour
     public RegionBehaviour regionBehaviourExample;
 
     private PerkGenerator perkGenerator;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        } else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -29,10 +42,13 @@ public class VirusBehaviour : MonoBehaviour
         if (text != null) text.text = virus.ToString();
         if (_VirusUI != null) _VirusUI.SetVirus(virus, perkGenerator);
 
-        RegionBehaviour.SubscribeOnClickRMB((Region) =>
+        foreach(RegionBehaviour regionBehaviour in RegionBehaviour.Regions)
         {
-            GetPopper().GetComponent<VirusPopper>().Pop(Region);
-        });
+            regionBehaviour.SubscribeOnInfected(() =>
+            {
+                GetPopper().GetComponent<VirusPopper>().Pop(regionBehaviour);
+            });
+        }
     }
 
     public GameObject GetPopper()

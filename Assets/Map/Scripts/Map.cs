@@ -199,9 +199,16 @@ public class Map
 
     public void StartInfection()
     {
-        int x = UnityEngine.Random.Range(0, Width);
-        int y = UnityEngine.Random.Range(0, Height);
+        int x;
+        int y;
 
+        do
+        {
+            x = UnityEngine.Random.Range(0, Width);
+            y = UnityEngine.Random.Range(0, Height);
+        } while (Grid[x, y].Type == RegionType.Water && Grid[x, y].city == null);
+        //
+        Debug.Log("Region infected x 'n y : " + x + ", " + y);
         Grid[x, y].city.Asymptomatic.Enqueue(1);
     }
 
