@@ -123,9 +123,11 @@ public class Map
                     (2 * 1 / distance + 5 * (1 - region.Altitude) - 2);
                 Culture culture = new Culture("Essa é uma cultura");
                 culture.GenerateCulture(region);
-                region.city = new City(region, culture);
-                region.city.RelPopulation =
-                    Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
+                region.city = new City(region, culture)
+                {
+                    RelPopulation =
+                    Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x)
+                };
             }
         });
     }
