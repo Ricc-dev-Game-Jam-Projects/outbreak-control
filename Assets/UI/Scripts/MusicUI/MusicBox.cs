@@ -21,6 +21,7 @@ public class MusicBox : MonoBehaviour
         tocador = MusicManager.instance;
 
         int conta = 0;
+        if (tocador == null) return;
 
         foreach(AudioClip clip in tocador.Musics)
         {
@@ -45,7 +46,7 @@ public class MusicBox : MonoBehaviour
     void Update()
     {
         // Gerencia o que está tocando no momento
-        if (tocador.Source.isPlaying)
+        if (tocador != null && tocador.Source.isPlaying)
         {
             NP.text = tocador.Source.clip.name;
         }

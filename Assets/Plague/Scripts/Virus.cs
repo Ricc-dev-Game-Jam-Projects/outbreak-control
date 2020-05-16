@@ -75,8 +75,8 @@ public class Virus
                 intensity += t.ContagionRate;
             }
         }
-
-        return Spreading + (intensity * Spreading);
+        float sprd = Spreading + (intensity * Spreading);
+        return sprd <= 0 ? 0 : sprd;
     }
 
     public float Lethality(Region region)
@@ -93,7 +93,8 @@ public class Virus
             }
         }
 
-        return FatalityCase + (intensity * FatalityCase);
+        float leta = FatalityCase + (intensity * FatalityCase);
+        return leta <= 0 ? 0 : leta;
     }
 
     public int SerialRangeRnd()

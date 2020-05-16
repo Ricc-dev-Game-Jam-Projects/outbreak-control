@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/_preload.unity
     guid: b50643da1dcbc3d499083ee3bdd6cf1a
   - enabled: 1
-    path: Assets/Scenes/Plague.test.unity
-    guid: af580f5717cdee64590efb4dc59c0bad
+    path: Assets/Scenes/Menu.unity
+    guid: 6734094307713d643bf5116c3fddddd6
+  - enabled: 1
+    path: Assets/Scenes/Game.unity
+    guid: 833ad3cb4be14f7418d89ba4616afc27
   m_configObjects: {}
