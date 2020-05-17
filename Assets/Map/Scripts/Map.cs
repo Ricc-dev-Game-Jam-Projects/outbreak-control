@@ -70,9 +70,9 @@ public class Map
 
             float max = new Vector2(Width / 2, Height / 2).magnitude;
             float my = new Vector2(region.X - Width / 2, region.Y - Height / 2).magnitude;
-            region.Altitude = (1 - my / max) *
+            region.Altitude = 1.1f*(1 - Sigmoid(12 * my / max - 6f)) *
                 (Mathf.PerlinNoise(xNoise, yNoise) * 0.5f +
-                Mathf.PerlinNoise(xNoise / 3, yNoise / 3) * 0.5f);
+                Mathf.PerlinNoise(xNoise / 3, yNoise / 3) * 0.5f) + 0.1f;
 
             region.Type = region.Altitude <= seaLevel ?
                 RegionType.Water : RegionType.Ground;
