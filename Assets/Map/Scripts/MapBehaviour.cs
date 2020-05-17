@@ -64,30 +64,12 @@ public class MapBehaviour : MonoBehaviour
         map.DefineRivers(RiverOccurrence);
         //map.StartInfection();
         StartCoroutine("CoolDownToInfect");
-
-        RemoveMargin();
     }
 
     IEnumerator CoolDownToInfect()
     {
         yield return new WaitForSecondsRealtime(5f);
         map.StartInfection();
-    }
-
-    public void RemoveMargin()
-    {
-        foreach(Transform regionGameObject in gameObject.transform)
-        {
-            Region reg = regionGameObject.GetComponent<RegionBehaviour>().Region;
-            if (reg.X < XMin || reg.X > XMax || reg.Y < YMin || reg.Y > YMax)
-            {
-                for (int i = 0; i < regionGameObject.transform.childCount; i++)
-                    Destroy(regionGameObject.transform.GetChild(i).gameObject);
-
-                regionGameObject.GetComponent<RegionBehaviour>().enabled = false;
-                Instantiate(RegionBlocked, regionGameObject.transform, false);
-            }
-        }
     }
 
     public void UpdateRegions()

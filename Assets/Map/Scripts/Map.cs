@@ -68,9 +68,11 @@ public class Map
             xNoise = xOffset + region.XHex * scale;
             yNoise = yOffset + region.YHex * scale;
 
-            region.Altitude =
-                Mathf.PerlinNoise(xNoise, yNoise) * 0.5f +
-                Mathf.PerlinNoise(xNoise / 3, yNoise / 3) * 0.5f;
+            float max = new Vector2(Width / 2, Height / 2).magnitude;
+            float my = new Vector2(region.X - Width / 2, region.Y - Height / 2).magnitude;
+            region.Altitude = (1 - my / max) *
+                (Mathf.PerlinNoise(xNoise, yNoise) * 0.5f +
+                Mathf.PerlinNoise(xNoise / 3, yNoise / 3) * 0.5f);
 
             region.Type = region.Altitude <= seaLevel ?
                 RegionType.Water : RegionType.Ground;
