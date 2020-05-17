@@ -66,7 +66,7 @@ public class Timer : MonoBehaviour
         }
     }
 
-    public static readonly int DayPerMonth = 30;
+    public static readonly int DayPerMonth = 7;
     public static readonly int MonthPerYear = 12;
 
     public int SecondPerReal = 16;
@@ -115,14 +115,13 @@ public class Timer : MonoBehaviour
 
     public void CalculateTime()
     {
-        Hour++;
-        OnHourPassed();
+        Day++;
+        OnDayPassed();
 
-        if (Hour >= DaySize)
+        if (Day > DayPerMonth * Month)
         {
-            Day++;
-            Hour = 0;
-            OnDayPassed();
+            Month++;
+            OnMonthPassed();
         }
         /*Second++;
 
@@ -166,11 +165,13 @@ public class Timer : MonoBehaviour
 
     public void OnDayPassed()
     {
+        Debug.Log("Day passed");
         DayEvent?.Invoke(this, new TimerEventArgs(this));
     }
 
     public void OnMonthPassed()
     {
+        Debug.Log("Week passed");
         MonthEvent?.Invoke(this, new TimerEventArgs(this));
     }
 }

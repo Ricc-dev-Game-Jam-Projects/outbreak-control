@@ -5,6 +5,11 @@ public class _app : MonoBehaviour
 {
     public static _app instance;
 
+    public string TutorialScene;
+    public string MenuScene;
+
+    private string FirstPlayKey = "first_play";
+
     void Awake()
     {
         #region SINGLETON
@@ -21,6 +26,13 @@ public class _app : MonoBehaviour
 
     private void Start()
     {
-        SceneManager.LoadScene(1);
+        if (PlayerPrefs.GetInt(FirstPlayKey) != 0)
+        {
+            SceneManager.LoadScene(MenuScene);
+        } else
+        {
+            PlayerPrefs.SetInt(FirstPlayKey, 1);
+            SceneManager.LoadScene(MenuScene); // TODO change to tutorial
+        }
     }
 }
