@@ -130,6 +130,15 @@ public class Map
         });
     }
 
+    public void UpdatePerWeek()
+    {
+        Sweep((region) =>
+        {
+            if(region.Type != RegionType.Water)
+                region.city.UpdatePerWeek();
+        });
+    }
+
     public void UpdatePerDay(Virus virus)
     {
         int[,,] migrations = new int[Width, Height, 6];
