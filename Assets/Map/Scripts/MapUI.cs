@@ -11,6 +11,7 @@ public class MapUI : MonoBehaviour
     public Button PopulationButton;
     public TextMeshPro PopulationSizeText;
     public TextMeshPro InfectedText;
+    public GameObject VirusBar;
 
     private bool showPopulation;
 
@@ -25,15 +26,21 @@ public class MapUI : MonoBehaviour
 
     private void Update()
     {
-        if(RegionBehaviour.RegionSelected != null)
+        if (RegionBehaviour.RegionSelected != null)
         {
             Region reg = RegionBehaviour.RegionSelected.Region;
-            if(reg != null && reg.Type != RegionType.Water)
+            if (reg != null && reg.Type != RegionType.Water)
             {
-                PopulationSizeText.text = reg.city.AbsPopulation + "";
-                InfectedText.text = reg.city.RelInfected + "";
-                PopUp.OpenOn(RegionBehaviour.RegionSelected.transform.position.x, RegionBehaviour.RegionSelected.transform.position.y);
-            } else
+                PopulationSizeText.text = ((int)(reg.city.Population * 1e3)) + "";
+                //InfectedText.text = ((int)(reg.city.Infected * 1e3)) + "";
+                VirusBar.transform.localScale =
+                    new Vector3(reg.city.Infected / reg.city.Population,
+                    VirusBar.transform.localScale.y,
+                    VirusBar.transform.localScale.z);
+                PopUp.OpenOn(RegionBehaviour.RegionSelected.transform.position.x,
+                    RegionBehaviour.RegionSelected.transform.position.y);
+            }
+            else
             {
                 PopUp.Close();
             }
