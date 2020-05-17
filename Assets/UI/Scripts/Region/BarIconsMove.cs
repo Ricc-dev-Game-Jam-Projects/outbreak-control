@@ -15,7 +15,6 @@ public class BarIconsMove : MonoBehaviour
             1f + (1.22f * VirusBar.localScale.x),
             VirusIcon.localPosition.y,
             VirusIcon.localPosition.z);
-        Debug.Log("Era pra ser: " + (1f + (1.22f * VirusBar.localScale.x)));
         PopIcon.localPosition = new Vector3(
             1f + (1.22f * PopBar.localScale.x),
             PopIcon.localPosition.y,

@@ -51,17 +51,31 @@ public class VirusBehaviour : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            foreach(RegionBehaviour regionBehaviour in RegionBehaviour.Regions)
+            {
+                if(regionBehaviour.Region.Type != RegionType.Water)
+                    GetPopper().GetComponent<VirusPopper>().Pop(regionBehaviour);
+            }
+        }
+    }
+    public static int PopNumber = 0; 
     public GameObject GetPopper()
     {
         GameObject popper;
         foreach (GameObject pop in virusPopperPool)
         {
-            if (pop.GetComponent<VirusPopper>().Able())
+            if (pop.GetComponent<VirusPopper>().Able)
             {
                 return pop;
             }
         }
         popper = Instantiate(virusPopperPrefab);
+        popper.name = "Popper " + PopNumber;
+        PopNumber++;
         virusPopperPool.Add(popper);
         return popper;
     }
