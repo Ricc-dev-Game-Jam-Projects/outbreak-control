@@ -140,45 +140,44 @@ public class Map
 
     public void UpdatePerDay(Virus virus)
     {
-        //(float notInfected, float infected)[,,] migrations =
-        //    new (float notInfected, float infected)[Width, Height, 6];
+        (float notInfected,
+            float infected,
+            Queue<float> asymptomatic)[,,] migrations = new (
+            float notInfected,
+            float infected,
+            Queue<float> asymptomatic)[Width, Height, 6];
         Sweep((region) =>
         {
             if (region.Type != RegionType.Water)
             {
                 region.city.UpdatePerDay(virus);
-                //        region.ForeachNeighbor((neighbor, i) =>
-                //        {
-                //            if (neighbor != null &&
-                //                neighbor.Type != RegionType.Water &&
-                //                neighbor.city.Population < 1)
-                //                migrations[region.X, region.Y, i] =
-                //                    City.MigrationPerDay(region.city, neighbor.city);
-                //        });
+                region.ForeachNeighbor((neighbor, i) =>
+                {
+                    if (neighbor != null &&
+                        neighbor.Type != RegionType.Water &&
+                        neighbor.city.Population < 1)
+                        migrations[region.X, region.Y, i] =
+                            City.PrepareMigrationPerDay(region.city, neighbor.city);
+                });
 
             }
         });
-        //Sweep((region) =>
-        //{
-        //    if (region.Type != RegionType.Water)
-        //    {
-        //        for (int i = 0; i < 6; i++)
-        //        {
-        //            if (region.Neighborhood[i] != null &&
-        //                region.Neighborhood[i].Type != RegionType.Water)
-        //            {
-        //                region.city.NotInfected -=
-        //                    migrations[region.X, region.Y, i].notInfected;
-        //                region.city.ReceiveInfected
-        //                    (-migrations[region.X, region.Y, i].infected);
-        //                region.Neighborhood[i].city.NotInfected +=
-        //                    migrations[region.X, region.Y, i].notInfected;
-        //                region.Neighborhood[i].city.ReceiveInfected
-        //                    (migrations[region.X, region.Y, i].infected);
-        //            }
-        //        }
-        //    }
-        //});
+        Sweep((region) =>
+        {
+            if (region.Type != RegionType.Water)
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    if (region.Neighborhood[i] != null &&
+                        region.Neighborhood[i].Type != RegionType.Water)
+                    {
+                        region.city.Emigrate(migrations[region.X, region.Y, i]);
+                        region.Neighborhood[i].city.
+                            Immigrate(migrations[region.X, region.Y, i]);
+                    }
+                }
+            }
+        });
     }
 
     public void DefineRivers(float occurrence)

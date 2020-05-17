@@ -34,13 +34,13 @@ public class MapUI : MonoBehaviour
             Region reg = RegionBehaviour.RegionSelected.Region;
             if (reg != null && reg.Type != RegionType.Water)
             {
-                PopulationSizeText.text = ((int)(reg.city.Population * 1e3)) + "";
+                PopulationSizeText.text = ((int)(reg.city.Population / City.Person)) + "";
                 InfectedText.text = ((int)(reg.city.Infected / City.Person)) + "";
                 VirusBar.transform.localScale =
                     new Vector3(reg.city.Infected / City.Person / 1000,
                     VirusBar.transform.localScale.y,
                     VirusBar.transform.localScale.z);
-                PopBar.transform.localScale = 
+                PopBar.transform.localScale =
                     new Vector3(reg.city.Population / City.Person / 1000,
                     PopBar.transform.localScale.y,
                     PopBar.transform.localScale.z);
@@ -53,6 +53,7 @@ public class MapUI : MonoBehaviour
             }
         }
 
-        TotalPopulationText.text = City.TotalPopulation.ToString("G", NumberFormatInfo.CurrentInfo);
+        TotalPopulationText.text = ((int)(City.TotalPopulation / City.Person)).
+            ToString("G", NumberFormatInfo.CurrentInfo);
     }
 }

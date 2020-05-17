@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class City
 {
-    public static int TotalPopulation = 0;
-    public const float Person = 1e-3f;
+    public static float TotalPopulation = 0;
+    public static float Person = 1e-3f;
     public float Population {
         get { return NotInfected + Infected; }
     }
@@ -27,7 +27,7 @@ public class City
 
     public City(float population, Region region, Culture myCulture)
     {
-        TotalPopulation += (int)(population / Person);
+        TotalPopulation += population;
         NotInfected = population;
         Symptomatic = 0;
         Money = 0;
@@ -38,10 +38,10 @@ public class City
 
     public void UpdatePerDay(Virus virus)
     {
-        float deaths = Symptomatic * 0.4f;//virus.Lethality(Region);
+        float deaths = Symptomatic * virus.Lethality(Region);
         Symptomatic -= deaths;
-        TotalPopulation -= (int)(deaths / Person);
-        float newInfected = NotInfected * Infected * 1.05f;//virus.InfectRate(Region);
+        TotalPopulation -= deaths;
+        float newInfected = NotInfected * Infected * virus.InfectRate(Region);
         newInfected = newInfected <= NotInfected ? newInfected : NotInfected;
 
         Asymptomatic.Enqueue(newInfected);
@@ -58,24 +58,56 @@ public class City
 
     public void UpdatePerWeek()
     {
-        NotInfected = Population * 1.0005f;
+        NotInfected += Population * 0.0005f;
+        TotalPopulation += Population * 0.0005f;
     }
 
-    public void ReceiveInfected(float infected)
+    public void Immigrate(
+        (float notInfected, float symptomatic, Queue<float> asymptomatic) migrate)
     {
-        float asymptomatic = 0;
-        foreach (float a in Asymptomatic)
-            asymptomatic += a;
-        Symptomatic += infected * Symptomatic / Infected;
-        infected *= asymptomatic / Infected;
+        NotInfected += migrate.notInfected;
+        if (Symptomatic == 0 && migrate.symptomatic != 0)
+            Region.OnRegionInfected();
+        Symptomatic += migrate.symptomatic;
         Queue<float> newAsymptomatic = new Queue<float>();
-        foreach (float a in Asymptomatic)
-            newAsymptomatic.Enqueue(infected * a / asymptomatic);
+        if (migrate.asymptomatic != null)
+            while (migrate.asymptomatic.Count != 0) newAsymptomatic.
+                Enqueue(Asymptomatic.Dequeue() + migrate.asymptomatic.Dequeue());
+        while (Asymptomatic.Count != 0)
+            newAsymptomatic.Enqueue(Asymptomatic.Dequeue());
         Asymptomatic = newAsymptomatic;
     }
 
-    public static (float notInfected, float Infected) MigrationPerDay
-        (City from, City to)
+    public void Emigrate(
+        (float notInfected, float symptomatic, Queue<float> asymptomatic) migrate)
+    {
+        NotInfected -= migrate.notInfected;
+        Symptomatic -= migrate.symptomatic;
+        Queue<float> newAsymptomatic = new Queue<float>();
+        if (migrate.asymptomatic != null)
+            if (migrate.asymptomatic.Count != 0 && Asymptomatic.Count != 0)
+            {
+                if (migrate.asymptomatic.Count < Asymptomatic.Count)
+                {
+                    while (migrate.asymptomatic.Count != 0) newAsymptomatic.
+                        Enqueue(Asymptomatic.Dequeue() - migrate.asymptomatic.Dequeue());
+                    while (Asymptomatic.Count != 0)
+                        newAsymptomatic.Enqueue(Asymptomatic.Dequeue());
+                }
+                else
+                {
+                    while (Asymptomatic.Count != 0) newAsymptomatic.
+                        Enqueue(Asymptomatic.Dequeue() - migrate.asymptomatic.Dequeue());
+                    while (migrate.asymptomatic.Count != 0)
+                        newAsymptomatic.Enqueue(migrate.asymptomatic.Dequeue());
+                }
+
+                Asymptomatic = newAsymptomatic;
+            }
+    }
+
+    public static (float notInfected, float symptomatic, Queue<float> asymptomatic)
+        PrepareMigrationPerDay(City from, City to)
     {
         float deltaPopulationDensity = from.Population /
             (from.Population + to.Population + 0.0000001f);
@@ -87,9 +119,15 @@ public class City
             deltaInfected * 0.3f +
             deltaPopulationDensity * 0.2f;
 
-        if (migration > 0f)
-            return (migration * from.NotInfected * 0.2f,
-                migration * from.Infected * 0.2f);
-        return (0, 0);
+        if (migration > 0 && migration + to.Population < 1 && migration < from.Population)
+        {
+            Queue<float> asymptomatic = new Queue<float>();
+            foreach (float a in to.Asymptomatic)
+                asymptomatic.Enqueue(a * migration * 0.2f);
+            return (
+                from.NotInfected * migration * 0.2f,
+                from.Symptomatic * migration * 0.2f, asymptomatic);
+        }
+        return (0, 0, null);
     }
 }
