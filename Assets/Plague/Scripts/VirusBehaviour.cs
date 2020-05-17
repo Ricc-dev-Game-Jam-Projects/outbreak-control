@@ -51,6 +51,7 @@ public class VirusBehaviour : MonoBehaviour
         }
     }
 
+    //eh assim que funcionam as balas de um revolver
     public GameObject GetPopper()
     {
         GameObject popper;
