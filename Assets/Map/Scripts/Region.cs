@@ -68,7 +68,7 @@ public class Region
 
     public void OnRegionInfected()
     {
-        Debug.Log("Region infected x: " + X + " y: " + Y);
+        //Debug.Log("Region infected x: " + X + " y: " + Y);
         RegionInfected?.Invoke();
     }
 }
