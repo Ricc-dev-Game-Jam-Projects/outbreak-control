@@ -40,10 +40,10 @@ public class GameCore : MonoBehaviour
     private void Start()
     {
         timer.DayEvent += DayEvent;
-        timer.MonthEvent += HourEvent;
+        timer.MonthEvent += MonthEvent;
     }
 
-    private void HourEvent(object sender, TimerEventArgs time)
+    private void MonthEvent(object sender, TimerEventArgs time)
     {
         mapBehaviour._map.UpdatePerWeek();
     }
