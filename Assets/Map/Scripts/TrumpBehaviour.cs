@@ -65,7 +65,7 @@ public class TrumpBehaviour : MonoBehaviour
             {
                 WallPosition = 5;
             }
-            CurrentWall.transform.rotation = Quaternion.Euler(0, 0, 120f + 60*WallPosition);
+            CurrentWall.transform.rotation = Quaternion.Euler(0, 0, 60*WallPosition);
         } else
         {
             WallPosition = 0;
