@@ -6,6 +6,7 @@ using UnityEngine;
 public class MapBehaviour : MonoBehaviour
 {
     public GameObject RegionPrefab;
+    public GameObject RegionBlocked;
     public static MapBehaviour instance;
 
     public int WGrid, HGrid;
@@ -17,6 +18,11 @@ public class MapBehaviour : MonoBehaviour
     public float SeaLevel;
     [Range(0f, 1f)]
     public float RiverOccurrence;
+
+    public int XMin;
+    public int XMax;
+    public int YMin;
+    public int YMax;
 
     private float pixelsPerUnit;
     private Map map;
@@ -58,12 +64,30 @@ public class MapBehaviour : MonoBehaviour
         map.DefineRivers(RiverOccurrence);
         //map.StartInfection();
         StartCoroutine("CoolDownToInfect");
+
+        RemoveMargin();
     }
 
     IEnumerator CoolDownToInfect()
     {
         yield return new WaitForSecondsRealtime(5f);
         map.StartInfection();
+    }
+
+    public void RemoveMargin()
+    {
+        foreach(Transform regionGameObject in gameObject.transform)
+        {
+            Region reg = regionGameObject.GetComponent<RegionBehaviour>().Region;
+            if (reg.X < XMin || reg.X > XMax || reg.Y < YMin || reg.Y > YMax)
+            {
+                for (int i = 0; i < regionGameObject.transform.childCount; i++)
+                    Destroy(regionGameObject.transform.GetChild(i).gameObject);
+
+                regionGameObject.GetComponent<RegionBehaviour>().enabled = false;
+                Instantiate(RegionBlocked, regionGameObject.transform, false);
+            }
+        }
     }
 
     public void UpdateRegions()
