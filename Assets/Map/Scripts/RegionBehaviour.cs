@@ -121,13 +121,11 @@ public class RegionBehaviour : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if(Select != null)
-            Select.SetActive(true);
+        Select.SetActive(true);
     }
 
     private void OnMouseExit()
     {
-        if(Select != null)
-            Select.SetActive(false);
+        Select.SetActive(false);
     }
 }
