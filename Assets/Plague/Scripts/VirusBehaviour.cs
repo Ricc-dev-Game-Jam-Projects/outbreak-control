@@ -53,14 +53,14 @@ public class VirusBehaviour : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            foreach(RegionBehaviour regionBehaviour in RegionBehaviour.Regions)
-            {
-                if(regionBehaviour.Region.Type != RegionType.Water)
-                    GetPopper().GetComponent<VirusPopper>().Pop(regionBehaviour);
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    foreach(RegionBehaviour regionBehaviour in RegionBehaviour.Regions)
+        //    {
+        //        if(regionBehaviour.Region.Type != RegionType.Water)
+        //            GetPopper().GetComponent<VirusPopper>().Pop(regionBehaviour);
+        //    }
+        //}
     }
     public static int PopNumber = 0; 
     public GameObject GetPopper()
