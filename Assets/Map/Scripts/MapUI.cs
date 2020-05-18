@@ -25,6 +25,12 @@ public class MapUI : MonoBehaviour
             MapBehaviour.instance.ShowPopulation(showPopulation);
             showPopulation = !showPopulation;
         });
+
+        RegionBehaviour.SubscribeOnClickLMB((region) =>
+        {
+            if(region.Region.Type != RegionType.Water)
+                PopUp.OpenOn(region);
+        });
     }
 
     private void Update()
@@ -44,8 +50,6 @@ public class MapUI : MonoBehaviour
                     new Vector3(reg.city.Population / City.Person / 1000,
                     PopBar.transform.localScale.y,
                     PopBar.transform.localScale.z);
-                PopUp.OpenOn(RegionBehaviour.RegionSelected.transform.position.x,
-                    RegionBehaviour.RegionSelected.transform.position.y);
             }
             else
             {

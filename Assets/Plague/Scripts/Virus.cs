@@ -32,7 +32,7 @@ public class Virus
         Spreading = Random.Range(0.7f, 1.7f);
         SerialRange = Random.Range(1f, 3f);
         FatalityCase = Random.Range(0.0005f, 0.03f);
-        InfectionTime = Random.Range(7f, 14f);
+        //InfectionTime = Random.Range(7f, 14f);
         CureTime = Random.Range(3f, 10f);
 
         Debug.Log("Virus Spreading " + Spreading);

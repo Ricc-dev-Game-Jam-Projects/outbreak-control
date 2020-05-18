@@ -124,7 +124,6 @@ public class RegionBehaviour : MonoBehaviour
         if (RegionSelected == this)
         {
             RegionSelected = null;
-            return;
         }
         RegionSelected = this;
         OnRegionSelectedLMB?.Invoke(this);

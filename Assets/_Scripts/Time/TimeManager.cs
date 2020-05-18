@@ -13,7 +13,7 @@ public class TimeManager : MonoBehaviour
     {
         if(TimeText != null)
         {
-            TimeText.text = "Day " + timer.Day;
+            TimeText.text = timer.Day + "";
         }
     }
 }

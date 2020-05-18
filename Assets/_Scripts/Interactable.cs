@@ -42,6 +42,9 @@ public class Interactable : MonoBehaviour
                 if (regb != null && regb.Region.Type != RegionType.Water)
                 {
                     RegionBehaviour.RegionLooking = regb;
+                } else
+                {
+                    RegionBehaviour.RegionLooking = null;
                 }
                 
                 if (go.GetComponent<InteractIt>() != null)
