@@ -44,7 +44,7 @@ public class Culture
 
         // Digestive
         SystemWeakness.Add(ESystems.Digestive, Random.Range((int) StrangAnimalEating, 4));
-        pointsToUse -= SystemWeakness[ESystems.Digestive];
+        pointsToUse -= SystemWeakness[ESystems.Digestive]; //16
 
         TransmissionWeakness.Add(ETransmission.Airborne, Random.Range(0, 4));
         

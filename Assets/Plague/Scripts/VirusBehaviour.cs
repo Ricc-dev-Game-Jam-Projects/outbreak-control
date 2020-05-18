@@ -63,6 +63,7 @@ public class VirusBehaviour : MonoBehaviour
         //}
     }
     public static int PopNumber = 0; 
+    
     public GameObject GetPopper()
     {
         GameObject popper;
