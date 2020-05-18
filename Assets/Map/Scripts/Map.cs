@@ -164,16 +164,27 @@ public class Map
         {
             if (region.Type != RegionType.Water)
             {
-                for (int i = 0; i < 6; i++)
+                // TODO free 
+                region.ForeachFreeNeighbor((regionB, i) =>
                 {
-                    if (region.Neighborhood[i] != null &&
-                        region.Neighborhood[i].Type != RegionType.Water)
+                    if (regionB != null &&
+                        regionB.Type != RegionType.Water)
                     {
                         region.city.Emigrate(migrations[region.X, region.Y, i]);
-                        region.Neighborhood[i].city.
+                        regionB.city.
                             Immigrate(migrations[region.X, region.Y, i]);
                     }
-                }
+                });
+                //for (int i = 0; i < 6; i++)
+                //{
+                //    if (region.Neighborhood[i] != null &&
+                //        region.Neighborhood[i].Type != RegionType.Water)
+                //    {
+                //        region.city.Emigrate(migrations[region.X, region.Y, i]);
+                //        region.Neighborhood[i].city.
+                //            Immigrate(migrations[region.X, region.Y, i]);
+                //    }
+                //}
             }
         });
     }
