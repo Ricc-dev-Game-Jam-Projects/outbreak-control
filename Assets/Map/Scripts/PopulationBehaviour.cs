@@ -6,12 +6,12 @@ public class PopulationBehaviour : MonoBehaviour
 {
     public Color PopulationColor;
 
-    public void SetPopulation(float populationDensity)
+    public void SetPopulation(float populationDensity, float infected)
     {
         GetComponent<SpriteRenderer>().color = new Color(
             PopulationColor.r,
             PopulationColor.g,
-            PopulationColor.b, populationDensity);
+            PopulationColor.b + infected, populationDensity);
         //transform.localScale = new Vector3(populationDensity, populationDensity, 0);
     }
 }
