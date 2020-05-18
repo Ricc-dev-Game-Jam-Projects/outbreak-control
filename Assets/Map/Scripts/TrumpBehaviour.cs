@@ -29,6 +29,11 @@ public class TrumpBehaviour : MonoBehaviour
         GetNewWall();
     }
 
+    public void ActiveBuilding()
+    {
+        IsBuildingWalls = !IsBuildingWalls;
+    }
+
     void Update()
     {
         if (IsBuildingWalls && RegionBehaviour.RegionLooking != null)
