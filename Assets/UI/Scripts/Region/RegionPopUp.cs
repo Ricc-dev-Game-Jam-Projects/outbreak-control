@@ -17,6 +17,11 @@ public class RegionPopUp : MonoBehaviour
 
     public void OpenOn(float x, float y)
     {
+        if(TrumpBehaviour.Trump.IsBuildingWalls)
+        {
+            return;
+        }
+
         RegPopUp pop = null;
         float offset = .15f;
 

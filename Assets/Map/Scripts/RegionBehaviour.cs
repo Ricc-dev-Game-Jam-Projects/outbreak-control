@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class RegionBehaviour : MonoBehaviour
 {
     public static RegionBehaviour RegionSelected;
+    public static RegionBehaviour RegionLooking;
     public static List<RegionBehaviour> Regions;
 
     public Color GroundColor;
@@ -69,6 +70,18 @@ public class RegionBehaviour : MonoBehaviour
         {
             riverHandler.SetRiver(Region, WaterColor);
         }
+    }
+
+    public bool BuildWall(int Position)
+    {
+        if (Region.Blocked[Position] != null)
+        {
+            return false;
+        }
+
+        Region.BlockNeighborhood(Position);
+
+        return true;
     }
 
     public void SubscribeOnInfected(Action subscriber)

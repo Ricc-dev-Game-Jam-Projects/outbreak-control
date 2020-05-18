@@ -10,6 +10,7 @@ public class Region
     public int X, Y;
     public float XHex, YHex;
     public Region[] Neighborhood;
+    public Region[] Blocked;
 
     public City city;
     public RegionType Type;
@@ -35,7 +36,20 @@ public class Region
         XHex = x - (float)y % 2 / 2;
         YHex = (float)3 * y / 4;
         Neighborhood = new Region[6];
+        Blocked = new Region[6];
         River = (false, pairs: new List<(int below, int above)>());
+    }
+
+    public void BlockNeighborhood(int neigh)
+    {
+        Blocked[neigh] = Neighborhood[neigh];
+        Neighborhood[neigh].Blocked[(neigh + 3) % 6] = this;
+    }
+
+    public void UnblockNeighborhood(int neigh)
+    {
+        Blocked[neigh] = null;
+        Neighborhood[neigh].Blocked[(neigh + 3) % 6] = null;
     }
 
     public void ForeachNeighbor(Action<Region, int> action)

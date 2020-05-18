@@ -32,7 +32,7 @@ public class _app : MonoBehaviour
         } else
         {
             PlayerPrefs.SetInt(FirstPlayKey, 1);
-            SceneManager.LoadScene(MenuScene); // TODO change to tutorial
+            SceneManager.LoadScene(TutorialScene);
         }
     }
 }

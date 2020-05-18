@@ -22,6 +22,9 @@ public class Interactable : MonoBehaviour
                 else if (regb != null && regb.enabled)
                 {
                     regb.OnLMBUp();
+                } else if(go.GetComponent<InteractIt>() != null)
+                {
+                    go.GetComponent<InteractIt>().InteractLMB();
                 }
             }
             else if(Input.GetMouseButtonUp(1))
@@ -29,6 +32,21 @@ public class Interactable : MonoBehaviour
                 if (regb != null)
                 {
                     regb.OnRMBUp();
+                }
+                else if (go.GetComponent<InteractIt>() != null)
+                {
+                    go.GetComponent<InteractIt>().InteractRMB();
+                }
+            } else
+            {
+                if (regb != null && regb.Region.Type != RegionType.Water)
+                {
+                    RegionBehaviour.RegionLooking = regb;
+                }
+                
+                if (go.GetComponent<InteractIt>() != null)
+                {
+                    go.GetComponent<InteractIt>().InteractOver();
                 }
             }
         }
