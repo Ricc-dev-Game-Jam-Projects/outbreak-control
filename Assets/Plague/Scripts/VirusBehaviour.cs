@@ -31,7 +31,7 @@ public class VirusBehaviour : MonoBehaviour
     void Start()
     {
         virusPopperPool = new List<GameObject>();
-        virus = new Virus("Deadly Flu", 0.5f);
+        virus = new Virus("Hepy", 0.5f);
         perkGenerator = new PerkGenerator();
         perkGenerator.GeneratePerks(out Symptom[] symptoms, out Transmission[] transmissions);
         Virus.CalculateSpreading(virus);
