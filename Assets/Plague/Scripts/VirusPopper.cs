@@ -5,6 +5,8 @@ public class VirusPopper : MonoBehaviour
 {
     public bool Able = false;
     private Animator animator;
+    private float TimeAt = 0f;
+    private float TimeTo = 10f;
 
     void Awake()
     {
@@ -20,6 +22,7 @@ public class VirusPopper : MonoBehaviour
         //animator.Play("PlagueCase");
         animator.SetBool("Checked", false);
         animator.SetTrigger("Case");
+        TimeAt = 0f;
         //Debug.Log("Popped on x: " + region.Region.X + "  y: " + region.Region.Y);
     }
 
@@ -31,6 +34,16 @@ public class VirusPopper : MonoBehaviour
         } else
         {
             Able = false;
+        }
+
+        if (!Able)
+        {
+            TimeAt += Time.deltaTime;
+            if(TimeAt >= TimeTo)
+            {
+                TimeAt = 0f;
+                animator.SetBool("Checked", true);
+            }
         }
     }
 

@@ -8,6 +8,7 @@ public class Virus
     public float Spreading; // Média de de pessoas contagiadas por 1 pessoa infectada (esse valor pode abaixar com as medidas)
     public float SerialRange; // A cada quantos dias são manifestados os sintomas, contabilizando mais infectados
     public float FatalityCase; // Qual a média de fatalidade entre os infectados
+    public float CureTime;
 
     public List<Symptom> MySymptoms { get; private set; } // Sintomas do virus
     public List<Transmission> MyTransmissions { get; private set; } //meios de Transmissao do virus
@@ -29,8 +30,9 @@ public class Virus
         };
         
         Spreading = Random.Range(1.4f, 4.0f);
-        SerialRange = Random.Range(1f, 5f);
+        SerialRange = Random.Range(1f, 3f);
         FatalityCase = Random.Range(0.0005f, 0.04f);
+        CureTime = Random.Range(3f, 10f);
 
         Debug.Log("Virus Spreading " + Spreading);
         Debug.Log("Virus Serial Range " + SerialRange);
@@ -100,6 +102,11 @@ public class Virus
     public int SerialRangeRnd()
     {
         return (int) Mathf.Clamp(Random.Range(SerialRange - 1, SerialRange + 1), 0, 15);
+    }
+
+    public float GetCureTime()
+    {
+        return CureTime;
     }
 
     public static float CalculateSpreading(Virus v)
