@@ -127,6 +127,11 @@ public class Map
                 culture.GenerateCulture(region);
                 float population = Mathf.PerlinNoise(xNoise, yNoise) * Sigmoid(x);
                 region.city = new City(population, region, culture);
+                //region.ForeachNeighbor((neighbor, i) =>
+                //{
+                //    if(neighbor != null && neighbor.Type != RegionType.Water)
+                //        region.city.economy.ConnectEconomy(neighbor.city.economy);
+                //});
             }
         });
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using jam;
 
 public class City
 {
@@ -16,11 +17,12 @@ public class City
             float infected = Symptomatic;
             foreach (float a in Asymptomatic)
                 infected += a;
-            return infected;
+            return infected < 0 ? 0 : infected;
         }
     }
     public float NotInfected;
     public int Money;
+    public Economy economy;
 
     public Culture MyCulture;
     public Region Region;
@@ -34,6 +36,7 @@ public class City
         MyCulture = myCulture;
         Region = region;
         Asymptomatic = new Queue<float>();
+        economy = new Economy((int)(population / Person), 500);
     }
 
     public void UpdatePerDay(Virus virus)
@@ -44,7 +47,7 @@ public class City
         while (Symptomatic < 0)
             break;
         TotalPopulation -= deaths;
-        float newInfected = NotInfected * Infected * 1;// virus.InfectRate(Region);
+        float newInfected = NotInfected * Infected * virus.InfectRate(Region);
         newInfected = newInfected <= NotInfected ? newInfected : NotInfected;
 
         if(newInfected != 0)
@@ -117,15 +120,16 @@ public class City
         PrepareMigrationPerDay(City from, City to)
     {
         float deltaPopulationDensity = from.Population /
-            (from.Population + to.Population + 0.0000001f) - 0.5f;
-        float deltaInfected = from.Symptomatic /
-            (from.Symptomatic + to.Symptomatic + 0.0000001f) - 0.5f;
-        float deltaMoney = to.Money / (from.Money + to.Money + 0.0000001f) - 0.5f;
+            (from.Population + to.Population + 0.0000001f);
+        float deltaInfected = from.Symptomatic/from.Population /
+            (from.Symptomatic/ from.Population + to.Symptomatic/ to.Population + 0.0000001f);
+        float deltaMoney = to.economy.CurrentMoney /
+            (from.economy.CurrentMoney + to.economy.CurrentMoney + 0.0000001f);
         float migration =
-            (deltaMoney * 0.5f +
-            deltaInfected * 0.3f +
-            deltaPopulationDensity * 0.2f) * 0.2f;
-
+            (//deltaMoney * 0.5f +
+            deltaInfected * 0.15f +
+            deltaPopulationDensity * 0.85f - 0.5f) * 0.2f;
+        //Debug.Log(deltaPopulationDensity);
         if (migration > Person && migration + to.Population < 1 && migration < from.Population)
         {
             Queue<float> asymptomatic = new Queue<float>();
