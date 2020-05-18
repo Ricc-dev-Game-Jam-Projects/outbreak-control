@@ -58,6 +58,17 @@ public class Region
             action(Neighborhood[i], i);
     }
 
+    public void ForeachFreeNeighbor(Action<Region, int> action)
+    {
+        for(int i = 0; i < Neighborhood.Length; i++)
+        {
+            if(Blocked[i] == null)
+            {
+                action(Neighborhood[i], i);
+            }
+        }
+    }
+
     public (Region neighbor, int i) GetLowerNeighbor()
     {
         (Region neighbor, int i) pair = (this, -1);

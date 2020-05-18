@@ -31,6 +31,9 @@ public class VirusPopper : MonoBehaviour
         if (animator.GetCurrentAnimatorStateInfo(0).IsTag("idle"))
         {
             Able = true;
+            gameObject.transform.parent = null;
+            gameObject.transform.localPosition = Vector3.zero;
+            gameObject.transform.localScale = Vector3.one;
         } else
         {
             Able = false;
