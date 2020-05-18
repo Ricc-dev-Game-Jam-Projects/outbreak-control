@@ -17,7 +17,9 @@ public class VirusPopper : MonoBehaviour
         gameObject.transform.localPosition = Vector3.zero;
         gameObject.transform.localScale = Vector3.one;
         Able = false;
-        animator.Play("PlagueCase");
+        //animator.Play("PlagueCase");
+        animator.SetBool("Checked", false);
+        animator.SetTrigger("Case");
         //Debug.Log("Popped on x: " + region.Region.X + "  y: " + region.Region.Y);
     }
 
@@ -30,5 +32,10 @@ public class VirusPopper : MonoBehaviour
         {
             Able = false;
         }
+    }
+
+    private void OnMouseEnter()
+    {
+        animator.SetBool("Checked", true);
     }
 }
