@@ -74,6 +74,11 @@ public class TrumpBehaviour : MonoBehaviour
         }
     }
 
+    public void ToggleBuilding()
+    {
+        IsBuildingWalls = !IsBuildingWalls;
+    }
+
     public void GetNewWall()
     {
         CurrentWall = Instantiate(WallPrefab);
