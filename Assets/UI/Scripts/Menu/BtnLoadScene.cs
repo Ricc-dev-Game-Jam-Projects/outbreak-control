@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class BtnLoadScene : MonoBehaviour
 {
     public string SceneName;
+    public bool Quitt;
 
     private Button btn;
 
@@ -15,8 +16,17 @@ public class BtnLoadScene : MonoBehaviour
         btn.onClick.AddListener(() =>
         {
             LevelManager lvl = FindObjectOfType<LevelManager>();
+            if(lvl == null)
+            {
+                lvl = gameObject.AddComponent<LevelManager>();
+            }
             if (lvl)
             {
+                if (Quitt)
+                {
+                    lvl.Quit();
+                    return;
+                }
                 lvl.LoadScene(SceneName);
             }
         });
