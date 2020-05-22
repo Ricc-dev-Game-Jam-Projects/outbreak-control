@@ -2,7 +2,7 @@
 using TMPro;
 using System.Collections.Generic;
 
-public class VirusBehaviour : MonoBehaviour
+public class VirusBehaviour : MonoBehaviour, IBehaviour
 {
     public static VirusBehaviour instance;
 
@@ -17,18 +17,19 @@ public class VirusBehaviour : MonoBehaviour
 
     private PerkGenerator perkGenerator;
 
-    private void Awake()
+    public void MyAwake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
-        } else
+        }
+        else
         {
             Destroy(gameObject);
         }
     }
 
-    void Start()
+    public void MyStart()
     {
         virusPopperPool = new List<GameObject>();
         virus = new Virus("Hepy", 0.5f);
@@ -42,7 +43,7 @@ public class VirusBehaviour : MonoBehaviour
         if (text != null) text.text = virus.ToString();
         if (_VirusUI != null) _VirusUI.SetVirus(virus, perkGenerator);
 
-        foreach(RegionBehaviour regionBehaviour in RegionBehaviour.Regions)
+        foreach (RegionBehaviour regionBehaviour in RegionBehaviour.Regions)
         {
             regionBehaviour.SubscribeOnInfected(() =>
             {

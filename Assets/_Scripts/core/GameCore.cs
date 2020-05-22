@@ -1,23 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class GameCore : MonoBehaviour
 {
     public static GameCore instance;
     public Timer timer;
 
+    [Header("UI Behaviours")]
+    public MapUI mapUI;
+    public VirusUI virusUI;
+    [Space()]
+    [Header("Behaviours")]
     public VirusBehaviour virusBehaviour;
     public MapBehaviour mapBehaviour;
     public TimeManager timeManager;
+    public IBehaviour teste;
 
     private Virus virus {
         get {
             return virusBehaviour.virus;
         }
     }
-
-    private Region region;
 
     void Awake()
     {
@@ -30,6 +35,8 @@ public class GameCore : MonoBehaviour
             Destroy(gameObject);
         }
         #endregion
+
+        // Cria todos os behaviours
 
         GameObject go = new GameObject();
         timer = go.AddComponent<Timer>();
