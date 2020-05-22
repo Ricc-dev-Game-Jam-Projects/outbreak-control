@@ -42,7 +42,7 @@ public class TrumpBehaviour : MonoBehaviour
                 if(regionBeha.BuildWall(WallPosition))
                 {
                     CurrentWall.transform.SetParent(regionBeha.transform);
-                    CurrentWall.GetComponent<Wall>().SetRegions(regionBeha.Region, WallPosition);
+                    CurrentWall.GetComponent<LiteralWall>().SetRegions(regionBeha.Region, WallPosition);
                     GetNewWall();
                 } else
                 {

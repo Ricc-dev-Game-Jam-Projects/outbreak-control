@@ -10,9 +10,9 @@ public class MarginHandler : MonoBehaviour
     public void SetMargin(Region region, Color waterColor)
     {
         int waterSequence = 0;
-        for (int i = 0; i < region.Neighborhood.Length; i++)
+        for (int i = 0; i < region.Frontiers.Length; i++)
         {
-            Region currentNeighbor = region.Neighborhood[i];
+            Region currentNeighbor = region.Frontiers[i].neighbor;
 
             if (currentNeighbor != null)
             {

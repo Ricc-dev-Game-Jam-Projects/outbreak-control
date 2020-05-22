@@ -1429,6 +1429,12 @@ RectTransform:
   m_AnchoredPosition: {x: -27.35, y: 2.53}
   m_SizeDelta: {x: 141.77, y: 55.42}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &590711160 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 988305252002193660, guid: 045311f58a16a9641a424dd207b425b4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1742454958807216842}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &687301910
 GameObject:
   m_ObjectHideFlags: 0
@@ -1697,12 +1703,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 843481190}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad83212139c0cfe4080e4605dddfe03c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b5170c2173de69418d6d93920c63990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   WallPrefab: {fileID: 7922213161659330757, guid: 5ba0bf5289bfe8c43a1c9422adf18233,
     type: 3}
-  CurrentWall: {fileID: 0}
+  CurrentWall: {fileID: 7922213161659330757, guid: 5ba0bf5289bfe8c43a1c9422adf18233,
+    type: 3}
   IsBuildingWalls: 0
 --- !u!4 &843481192
 Transform:
@@ -3143,7 +3150,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1275556257}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 250f275011bbc3a4e8282e82ed0ad2c3, type: 3}
+  m_Script: {fileID: 11500000, guid: 5cc0aff1ea026b14caf96371889beab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   RegionPrefab: {fileID: 9164362076272197100, guid: fa6aaf0e95bd04b4fb69ada3998184f6,
@@ -3154,13 +3161,9 @@ MonoBehaviour:
   HGrid: 27
   XOffset: 0
   YOffset: 0
-  Scale: 0.18
+  Scale: 0.2
   SeaLevel: 0.4
-  RiverOccurrence: 0.25
-  XMin: 4
-  XMax: 48
-  YMin: 4
-  YMax: 31
+  RiverOccurrence: 0.2
 --- !u!4 &1275556259
 Transform:
   m_ObjectHideFlags: 0
@@ -6217,6 +6220,7 @@ MonoBehaviour:
   InfectedText: {fileID: 1993272032}
   VirusBar: {fileID: 260275360}
   PopBar: {fileID: 465956933}
+  ImmuneBar: {fileID: 590711160}
 --- !u!1 &2095685682
 GameObject:
   m_ObjectHideFlags: 0
