@@ -62,7 +62,6 @@ public class MapBehaviour : MonoBehaviour, IBehaviour
             t.GetComponent<RegionBehaviour>().Initialize();
         }
 
-        map.StartInfection();
         StartCoroutine("CoolDownToInfect");
     }
 

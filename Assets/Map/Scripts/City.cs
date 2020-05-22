@@ -45,6 +45,7 @@ public class City
     float deltaMoney = to.economy.CurrentMoney /
       (from.economy.CurrentMoney + to.economy.CurrentMoney + d);
 
-    return (deltaMoney + deltaInfectious + deltaDensity) / 3 - 0.5f;
+    return deltaInfectious - 0.5f;
+    //return (deltaMoney + deltaInfectious + deltaDensity) / 3 - 0.5f;
   }
 }

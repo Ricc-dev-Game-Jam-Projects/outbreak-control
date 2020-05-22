@@ -65,6 +65,8 @@ public class GameCore : MonoBehaviour
         mapBehaviour.RegionPrefab = RegionPrefab;
         mapBehaviour.WGrid = 41;
         mapBehaviour.HGrid = 27;
+        mapBehaviour.SeaLevel = 0.4f;
+        mapBehaviour.Scale = 0.2f;
         mapBehaviour.transform.position = new Vector3(-8.881f, -5f);
 
         GameObject wallObj = CreateObj("TrumpBehaviour");

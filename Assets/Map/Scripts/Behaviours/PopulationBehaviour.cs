@@ -11,7 +11,8 @@ public class PopulationBehaviour : MonoBehaviour
     GetComponent<SpriteRenderer>().color = new Color(
         PopulationColor.r,
         PopulationColor.g,
-        PopulationColor.b + symptomaticDensity, Density);
+        PopulationColor.b + symptomaticDensity, 
+        Density);
     //transform.localScale = new Vector3(populationDensity, populationDensity, 0);
   }
 }
