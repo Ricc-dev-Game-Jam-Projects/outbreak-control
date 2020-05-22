@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wall : InteractIt
+public class LiteralWall : InteractIt
 {
     public Region RegionBlock01;
     public int Position;
@@ -21,4 +21,14 @@ public class Wall : InteractIt
         RegionBlock01.UnblockNeighborhood(Position);
         Destroy(gameObject);
     }
+}
+
+public class Wall
+{
+  public float Resistance;
+
+  public Wall(float resistance)
+  {
+    Resistance = resistance;
+  }
 }

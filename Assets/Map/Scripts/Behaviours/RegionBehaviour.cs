@@ -74,7 +74,7 @@ public class RegionBehaviour : MonoBehaviour
 
   public bool BuildWall(int Position)
   {
-    if (Region.Blocked[Position] != null)
+    if (Region.Frontiers[Position].wall != null)
     {
       return false;
     }

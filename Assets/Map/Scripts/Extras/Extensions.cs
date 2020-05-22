@@ -64,4 +64,3 @@ public class Queue : Queue<float>
     return newQueue;
   }
 }
-

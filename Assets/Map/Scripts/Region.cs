@@ -9,8 +9,8 @@ public class Region
   public Map Map;
   public int X, Y;
   public float XHex, YHex;
-  public Region[] Neighborhood;
-  public Region[] Blocked;
+  public (Region neighbor, Wall wall)[] Frontiers;
+  //public Region[] Blocked;
 
   public City city;
   public RegionType Type;
@@ -35,8 +35,8 @@ public class Region
     Y = y;
     XHex = x - (float)y % 2 / 2;
     YHex = (float)3 * y / 4;
-    Neighborhood = new Region[6];
-    Blocked = new Region[6];
+    Frontiers = new (Region neighbor, Wall block)[6];
+    //Blocked = new Region[6];
     River = (false, pairs: new List<(int below, int above)>());
   }
 
@@ -46,39 +46,49 @@ public class Region
 
   public void BlockNeighborhood(int neigh)
   {
-    Blocked[neigh] = Neighborhood[neigh];
-    Neighborhood[neigh].Blocked[(neigh + 3) % 6] = this;
+    Wall wall = new Wall(0.5f);
+
+    Frontiers[neigh].wall = wall;
+    Frontiers[neigh].neighbor.Frontiers[(neigh + 3) % 6].wall = wall;
   }
 
   public void UnblockNeighborhood(int neigh)
   {
-    Blocked[neigh] = null;
-    Neighborhood[neigh].Blocked[(neigh + 3) % 6] = null;
+    Frontiers[neigh].wall = null;
+    Frontiers[neigh].neighbor.Frontiers[(neigh + 3) % 6].wall = null;
   }
 
   public void ForeachNeighbor(Action<Region, int> action)
   {
-    for (int i = 0; i < Neighborhood.Length; i++)
-      action(Neighborhood[i], i);
+    for (int i = 0; i < Frontiers.Length; i++)
+      if(Frontiers[i].neighbor != null)
+        action(Frontiers[i].neighbor, i);
   }
 
-  public void ForeachFreeNeighbor(Action<Region, int> action)
+  public void ForeachNeighbor(Action<Region, Wall, int> action)
   {
-    for (int i = 0; i < Neighborhood.Length; i++)
-    {
-      if (Blocked[i] == null)
-      {
-        action(Neighborhood[i], i);
-      }
-    }
+    for (int i = 0; i < Frontiers.Length; i++)
+      if (Frontiers[i].neighbor != null)
+        action(Frontiers[i].neighbor, Frontiers[i].wall, i);
   }
+
+  //public void ForeachFreeNeighbor(Action<Region, int> action)
+  //{
+  //  for (int i = 0; i < Neighborhood.Length; i++)
+  //  {
+  //    if (Blocked[i] == null)
+  //    {
+  //      action(Neighborhood[i], i);
+  //    }
+  //  }
+  //}
 
   public (Region neighbor, int i) GetLowerNeighbor()
   {
     (Region neighbor, int i) pair = (this, -1);
     ForeachNeighbor((neighbor, i) =>
     {
-      if (neighbor != null && neighbor.altitude < pair.neighbor.altitude)
+      if (neighbor.altitude < pair.neighbor.altitude)
         pair = (neighbor, i);
     });
     return pair;
@@ -89,7 +99,7 @@ public class Region
     (Region neighbor, int i) pair = (this, -1);
     ForeachNeighbor((neighbor, i) =>
     {
-      if (neighbor != null && neighbor.altitude > pair.neighbor.altitude)
+      if (neighbor.altitude > pair.neighbor.altitude)
         pair = (neighbor, i);
     });
     return pair;
@@ -97,7 +107,6 @@ public class Region
 
   public void OnRegionInfected()
   {
-    //Debug.Log("Region infected x: " + X + " y: " + Y);
     RegionInfected?.Invoke();
   }
 }

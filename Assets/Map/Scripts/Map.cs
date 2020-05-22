@@ -46,13 +46,15 @@ public class Map
         catch (Exception) { return null; }
       }
 
-      region.Neighborhood = y % 2 == 0
-        ? new Region[] {
-          neighbor(x, y - 1), neighbor(x + 1, y - 1), neighbor(x + 1, y),
-          neighbor(x + 1, y + 1), neighbor(x, y + 1), neighbor(x - 1, y) }
-        : new Region[] {
-          neighbor(x - 1, y - 1), neighbor(x, y - 1), neighbor(x + 1, y),
-          neighbor(x, y + 1), neighbor(x - 1, y + 1), neighbor(x - 1, y) };
+      region.Frontiers = y % 2 == 0
+        ? new (Region neighbor, Wall wall)[] {
+          (neighbor(x, y - 1), null), (neighbor(x + 1, y - 1), null),
+          (neighbor(x + 1, y), null), (neighbor(x + 1, y + 1), null),
+          (neighbor(x, y + 1), null), (neighbor(x - 1, y), null) }
+        : new (Region neighbor, Wall wall)[] {
+          (neighbor(x - 1, y - 1), null), (neighbor(x, y - 1), null),
+          (neighbor(x + 1, y), null), (neighbor(x, y + 1), null),
+          (neighbor(x - 1, y + 1), null), (neighbor(x - 1, y), null) };
     });
   }
 
@@ -87,7 +89,7 @@ public class Map
     ForeachRegion((region) =>
     {
       if (region.IsGround())
-        foreach (Region neighbor in region.Neighborhood)
+        foreach (var (neighbor, wall) in region.Frontiers)
           if (neighbor != null && neighbor.IsWater())
           {
             region.Type = RegionType.Coast;
@@ -107,7 +109,7 @@ public class Map
       var below = coast.GetLowerNeighbor();
       var above = coast.GetHigherNeighbor();
       Region currentRegion = coast;
-      Region previousRegion = coast.Neighborhood[below.i];
+      Region previousRegion = coast.Frontiers[below.i].neighbor;
 
       do
       {
@@ -122,7 +124,7 @@ public class Map
 
         previousRegion = currentRegion;
         if (above.i != -1)
-          currentRegion = currentRegion.Neighborhood[above.i];
+          currentRegion = currentRegion.Frontiers[above.i].neighbor;
       } while (above.i != -1);
     }
   }
@@ -168,19 +170,20 @@ public class Map
     {
       if (!region.IsWater())
       {
-        region.ForeachNeighbor((neighbor, i) =>
+        region.ForeachNeighbor((neighbor, wall, i) =>
         {
-          if (neighbor == null) return;
-
           if (!neighbor.IsWater())
           {
             migrations[x, y, i] =
               City.MigrationIntensity(region.city, neighbor.city) / 6;
+
             if (migrations[x, y, i] < 0) migrations[x, y, i] = 0;
+
+            if (wall.Resistance >= migrations[x, y, i])
+              migrations[x, y, i] = 0;
+            else region.UnblockNeighborhood(i);
           }
         });
-
-
       }
     });
 
@@ -193,8 +196,6 @@ public class Map
 
         region.ForeachNeighbor((neighbor, i) =>
         {
-          if (neighbor == null) return;
-
           if (!neighbor.IsWater())
           {
             float limitMax = 1 - neighbor.city.population.Density;
@@ -283,7 +284,7 @@ public class Map
 
       action(region);
 
-      foreach (Region neighbor in region.Neighborhood)
+      foreach (var (neighbor, wall) in region.Frontiers)
         if (neighbor != null && !visited[neighbor.X, neighbor.Y])
         {
           queue.Enqueue(neighbor);
@@ -305,7 +306,7 @@ public class Map
 
       action(region);
 
-      foreach (Region neighbor in region.Neighborhood)
+      foreach (var (neighbor, wall) in region.Frontiers)
         if (neighbor != null && !visited[neighbor.X, neighbor.Y])
         {
           queue.Enqueue(neighbor);
@@ -327,7 +328,7 @@ public class Map
 
       if (function(region)) return;
 
-      foreach (Region neighbor in region.Neighborhood)
+      foreach (var (neighbor, wall) in region.Frontiers)
         if (neighbor != null && !visited[neighbor.X, neighbor.Y])
         {
           queue.Enqueue(neighbor);
@@ -349,7 +350,7 @@ public class Map
 
       if (function(region)) return;
 
-      foreach (Region neighbor in region.Neighborhood)
+      foreach (var (neighbor, wall) in region.Frontiers)
         if (neighbor != null && !visited[neighbor.X, neighbor.Y])
         {
           queue.Enqueue(neighbor);

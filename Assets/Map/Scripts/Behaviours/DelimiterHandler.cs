@@ -11,7 +11,7 @@ public class DelimiterHandler : MonoBehaviour
   {
     region.ForeachNeighbor((neighbor, i) =>
     {
-      if (neighbor != null && neighbor.Level < region.Level)
+      if (neighbor.Level < region.Level)
       {
         if (region.IsCoast() && neighbor.IsWater()) return;
 
