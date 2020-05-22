@@ -45,12 +45,12 @@ public class GameCore : MonoBehaviour
 
     private void MonthEvent(object sender, TimerEventArgs time)
     {
-        mapBehaviour._map.UpdatePerWeek();
+        mapBehaviour.map.UpdatePerWeek();
     }
 
     private void DayEvent(object sender, TimerEventArgs time)
     {
-        mapBehaviour._map.UpdatePerDay(virus);
+        mapBehaviour.map.UpdatePerDay(virus);
         mapBehaviour.UpdateRegions();
     }
 }

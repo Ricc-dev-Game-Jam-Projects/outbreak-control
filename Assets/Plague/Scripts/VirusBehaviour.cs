@@ -42,13 +42,13 @@ public class VirusBehaviour : MonoBehaviour
         if (text != null) text.text = virus.ToString();
         if (_VirusUI != null) _VirusUI.SetVirus(virus, perkGenerator);
 
-        foreach(RegionBehaviour regionBehaviour in RegionBehaviour.Regions)
-        {
-            regionBehaviour.SubscribeOnInfected(() =>
-            {
-                GetPopper().GetComponent<VirusPopper>().Pop(regionBehaviour);
-            });
-        }
+        //foreach(RegionBehaviour regionBehaviour in RegionBehaviour.Regions)
+        //{
+        //    regionBehaviour.SubscribeOnInfected(() =>
+        //    {
+        //        GetPopper().GetComponent<VirusPopper>().Pop(regionBehaviour);
+        //    });
+        //}
     }
 
     private void Update()
