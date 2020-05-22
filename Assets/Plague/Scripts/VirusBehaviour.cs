@@ -27,6 +27,8 @@ public class VirusBehaviour : MonoBehaviour, IBehaviour
         {
             Destroy(gameObject);
         }
+
+        Debug.Log("Fui criado hee");
     }
 
     public void MyStart()
@@ -52,17 +54,6 @@ public class VirusBehaviour : MonoBehaviour, IBehaviour
         }
     }
 
-    private void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    foreach(RegionBehaviour regionBehaviour in RegionBehaviour.Regions)
-        //    {
-        //        if(regionBehaviour.Region.Type != RegionType.Water)
-        //            GetPopper().GetComponent<VirusPopper>().Pop(regionBehaviour);
-        //    }
-        //}
-    }
     public static int PopNumber = 0; 
     
     public GameObject GetPopper()

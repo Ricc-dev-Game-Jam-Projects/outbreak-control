@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrumpBehaviour : MonoBehaviour
+public class TrumpBehaviour : MonoBehaviour, IBehaviour
 {
     public static TrumpBehaviour Trump;
 
@@ -13,7 +13,7 @@ public class TrumpBehaviour : MonoBehaviour
 
     private int WallPosition = 0;
 
-    private void Awake()
+    public void MyAwake()
     {
         if(Trump == null)
         {
@@ -24,7 +24,7 @@ public class TrumpBehaviour : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void MyStart()
     {
         GetNewWall();
     }

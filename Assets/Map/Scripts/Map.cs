@@ -179,7 +179,7 @@ public class Map
 
             if (migrations[x, y, i] < 0) migrations[x, y, i] = 0;
 
-            if (wall.Resistance >= migrations[x, y, i])
+            if (wall != null && wall.Resistance >= migrations[x, y, i])
               migrations[x, y, i] = 0;
             else region.UnblockNeighborhood(i);
           }

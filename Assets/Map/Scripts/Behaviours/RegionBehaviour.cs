@@ -1,147 +1,142 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class RegionBehaviour : MonoBehaviour
 {
-  public static RegionBehaviour RegionSelected;
-  public static RegionBehaviour RegionLooking;
-  public static List<RegionBehaviour> Regions;
+    public static RegionBehaviour RegionSelected;
+    public static RegionBehaviour RegionLooking;
+    public static List<RegionBehaviour> Regions = new List<RegionBehaviour>();
 
-  public Color GroundColor;
-  public Color WaterColor;
-  public GameObject Select;
+    public Color GroundColor;
+    public Color WaterColor;
+    public GameObject Select;
 
-  public Region Region;
+    public Region Region;
 
-  public delegate void RegionHandler(RegionBehaviour selectedRegion);
-  private event RegionHandler OnRegionSelectedLMB;
-  private event RegionHandler OnRegionSelectedRMB;
+    public delegate void RegionHandler(RegionBehaviour selectedRegion);
+    private event RegionHandler OnRegionSelectedLMB;
+    private event RegionHandler OnRegionSelectedRMB;
 
-  private PopulationBehaviour populationBehaviour;
+    private PopulationBehaviour populationBehaviour;
 
-  private void Awake()
-  {
-    if (Regions == null)
+    public void Initialize()
     {
-      Regions = new List<RegionBehaviour>();
+        Regions.Add(this);
+
+        LoadRegion();
     }
 
-    Regions.Add(this);
-  }
-
-  void Start()
-  {
-    SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-    populationBehaviour = GetComponentInChildren<PopulationBehaviour>();
-    MarginHandler marginHandler = GetComponentInChildren<MarginHandler>();
-    RiverHandler riverHandler = GetComponentInChildren<RiverHandler>();
-
-    switch (Region.Type)
+    void LoadRegion()
     {
-      case RegionType.Ground:
-        spriteRenderer.color =
-          Color.Lerp(Color.black, GroundColor, 1 - Region.Altitude);
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        populationBehaviour = GetComponentInChildren<PopulationBehaviour>();
+        MarginHandler marginHandler = GetComponentInChildren<MarginHandler>();
+        RiverHandler riverHandler = GetComponentInChildren<RiverHandler>();
 
-        populationBehaviour.SetPopulation(Region.city.population.Density,
-            Region.city.population.SymptomaticDensity);
-        break;
-      case RegionType.Coast:
-        spriteRenderer.color =
-            Color.Lerp(Color.black, GroundColor, 1 - Region.Altitude);
+        switch (Region.Type)
+        {
+            case RegionType.Ground:
+            spriteRenderer.color =
+                Color.Lerp(Color.black, GroundColor, 1 - Region.Altitude);
 
-        marginHandler.SetMargin(Region,
-            Color.Lerp(Color.black, WaterColor, Region.Altitude));
-        populationBehaviour.SetPopulation(Region.city.population.Density,
-            Region.city.population.SymptomaticDensity);
-        break;
-      case RegionType.Water:
-        spriteRenderer.color =
-            Color.Lerp(Color.black, WaterColor, Region.Altitude);
-        Destroy(populationBehaviour.gameObject);
-        break;
+            populationBehaviour.SetPopulation(Region.city.population.Density,
+                Region.city.population.SymptomaticDensity);
+            break;
+            case RegionType.Coast:
+            spriteRenderer.color =
+                Color.Lerp(Color.black, GroundColor, 1 - Region.Altitude);
+
+            marginHandler.SetMargin(Region,
+                Color.Lerp(Color.black, WaterColor, Region.Altitude));
+            populationBehaviour.SetPopulation(Region.city.population.Density,
+                Region.city.population.SymptomaticDensity);
+            break;
+            case RegionType.Water:
+            spriteRenderer.color =
+                Color.Lerp(Color.black, WaterColor, Region.Altitude);
+            Destroy(populationBehaviour.gameObject);
+            break;
+        }
+
+        GetComponentInChildren<DelimiterHandler>().SetDelimiter(Region);
+
+        if (Region.River.exists)
+        {
+            riverHandler.SetRiver(Region, WaterColor);
+        }
     }
 
-    GetComponentInChildren<DelimiterHandler>().SetDelimiter(Region);
-
-    if (Region.River.exists)
+    public bool BuildWall(int Position)
     {
-      riverHandler.SetRiver(Region, WaterColor);
-    }
-  }
+        if (Region.Frontiers[Position].wall != null)
+        {
+            return false;
+        }
 
-  public bool BuildWall(int Position)
-  {
-    if (Region.Frontiers[Position].wall != null)
-    {
-      return false;
+        Region.BlockNeighborhood(Position);
+
+        return true;
     }
 
-    Region.BlockNeighborhood(Position);
-
-    return true;
-  }
-
-  public void SubscribeOnInfected(Action subscriber)
-  {
-    if (Region != null && !Region.IsWater())
-      Region.RegionInfected += subscriber;
-  }
-
-  public static void SubscribeOnClickLMB(RegionHandler subscriber)
-  {
-    foreach (RegionBehaviour regionB in Regions)
+    public void SubscribeOnInfected(Action subscriber)
     {
-      regionB.OnRegionSelectedLMB += subscriber;
+        if (Region != null && !Region.IsWater())
+            Region.RegionInfected += subscriber;
     }
-  }
 
-  public static void SubscribeOnClickRMB(RegionHandler subscriber)
-  {
-    foreach (RegionBehaviour regionB in Regions)
+    public static void SubscribeOnClickLMB(RegionHandler subscriber)
     {
-      regionB.OnRegionSelectedRMB += subscriber;
+        foreach (RegionBehaviour regionB in Regions)
+        {
+          regionB.OnRegionSelectedLMB += subscriber;
+        }
     }
-  }
 
-  public void UpdateRegion()
-  {
-    if (populationBehaviour != null)
-      populationBehaviour.SetPopulation(Region.city.population.Density,
-        Region.city.population.SymptomaticDensity);
-  }
-
-  public void ShowPopulation(bool show)
-  {
-    if (!Region.IsWater()) populationBehaviour.gameObject.SetActive(show);
-  }
-
-  public void OnLMBUp()
-  {
-    if (RegionSelected == this)
+    public static void SubscribeOnClickRMB(RegionHandler subscriber)
     {
-      RegionSelected = null;
+        foreach (RegionBehaviour regionB in Regions)
+        {
+          regionB.OnRegionSelectedRMB += subscriber;
+        }
     }
-    RegionSelected = this;
-    OnRegionSelectedLMB?.Invoke(this);
-  }
 
-  public void OnRMBUp()
-  {
-    OnRegionSelectedRMB?.Invoke(this);
-  }
+    public void UpdateRegion()
+    {
+        if (populationBehaviour != null)
+            populationBehaviour.SetPopulation(Region.city.population.Density,
+                Region.city.population.SymptomaticDensity);
+    }
 
-  private void OnMouseEnter()
-  {
-    if (Select != null)
-      Select.SetActive(true);
-  }
+    public void ShowPopulation(bool show)
+    {
+        if (!Region.IsWater()) populationBehaviour.gameObject.SetActive(show);
+    }
 
-  private void OnMouseExit()
-  {
-    if (Select != null)
-      Select.SetActive(false);
-  }
+    public void OnLMBUp()
+    {
+        if (RegionSelected == this)
+        {
+            RegionSelected = null;
+        }
+        RegionSelected = this;
+        OnRegionSelectedLMB?.Invoke(this);
+    }
+
+    public void OnRMBUp()
+    {
+        OnRegionSelectedRMB?.Invoke(this);
+    }
+
+    private void OnMouseEnter()
+    {
+        if (Select != null)
+            Select.SetActive(true);
+    }
+
+    private void OnMouseExit()
+    {
+        if (Select != null)
+            Select.SetActive(false);
+    }
 }
